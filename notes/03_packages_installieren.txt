@@ -1,0 +1,16 @@
+### .venv aktivieren
+1.) View > Command Palette > Python: Select Interpreter > .\venv\Scripts\python.exe
+2.) TERMINAL NEU STARTEN falls bereits eins geöffnet war!!!
+3.) Terminal > New Terminal >  Git Bash Terminal öffnen
+4.) which python    --> Prüfen ob Python Runtime von .venv aktiv ist.
+5.) pip list        --> Nur pip & setuptools sollten sichtbar sein.
+6.) pip install PACKAGENAME1 PACKAGENAME2
+7.) pip list
+
+
+### ALTERNATIVE
+1.) Terminal > New Terminal >  Git Bash Terminal öffnen
+2.) source .venv/Scripts/activate
+3.) pip list
+4.) pip install PACKAGENAME1 PACKAGENAME2
+5.) pip list

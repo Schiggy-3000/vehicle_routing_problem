@@ -1,0 +1,7 @@
+### Diverses
+
+Comment multiple lines (WIN):   CTRL + k > CTRL + c
+Uncomment multiple lines (WIN): CTRL + k > CTRL + u
+
+Increase indent: Tab
+Decrease indent: Shift + Tab

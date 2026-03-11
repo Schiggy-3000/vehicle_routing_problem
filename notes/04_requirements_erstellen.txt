@@ -1,0 +1,5 @@
+### requirements.txt erstellen
+1.) Terminal > New Terminal >  Git Bash Terminal öffnen
+2.) source .venv/Scripts/activate
+3.) pip list
+4.) pip freeze > requirements.txt
