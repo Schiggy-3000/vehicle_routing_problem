@@ -1,0 +1,4 @@
+### Links
+Googe OR-Tools > Vehicle Routing Problem (VRP): https://developers.google.com/optimization/routing/vrp
+Google Distance Matrix API doc: https://developers.google.com/maps/documentation/distance-matrix
+Google Distance Matrix API doc > parameter reference: https://developers.google.com/maps/documentation/distance-matrix/distance-matrix#maps_http_distancematrix_latlng-txt
