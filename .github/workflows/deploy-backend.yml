@@ -7,10 +7,8 @@ on:
   workflow_dispatch:
 
 env:
-  PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
   SERVICE_NAME: google-cloud-run-vrp
   REGION: europe-west4
-  IMAGE: gcr.io/${{ secrets.GCP_PROJECT_ID }}/google-cloud-run-vrp
 
 jobs:
   deploy:
@@ -38,16 +36,10 @@ jobs:
           pip install -r requirements.txt
           python -m pytest tests/ -v
 
-      - name: Build and push Docker image
-        run: |
-          gcloud builds submit \
-            --tag $IMAGE \
-            backend/
-
-      - name: Deploy to Cloud Run
+      - name: Deploy to Cloud Run from source
         run: |
           gcloud run deploy $SERVICE_NAME \
-            --image $IMAGE \
+            --source backend/ \
             --region $REGION \
             --platform managed \
             --memory 1Gi \
