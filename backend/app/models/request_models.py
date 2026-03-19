@@ -1,4 +1,4 @@
-from typing import Literal
+from typing import List, Literal, Tuple
 from pydantic import BaseModel, Field
 
 
@@ -8,8 +8,8 @@ class Location(BaseModel):
     address: str = ""
     lat: float
     lng: float
-    demand: int = 0                         # CVRP: units required at this stop
-    time_window: tuple[int, int] = (0, 86400)  # VRPTW: [open, close] in seconds from midnight
+    demand: int = 0                                    # CVRP: units required at this stop
+    time_window: Tuple[int, int] = (0, 86400)          # VRPTW: [open, close] in seconds from midnight
 
 
 class PickupDeliveryPair(BaseModel):
@@ -26,8 +26,8 @@ class Vehicle(BaseModel):
 class SolveRequest(BaseModel):
     problem_type: Literal["TSP", "VRP", "CVRP", "PDP", "VRPTW"]
     depot_index: int = 0
-    locations: list[Location] = Field(min_length=2)
-    vehicles: list[Vehicle] = Field(min_length=1)
-    pickup_delivery_pairs: list[PickupDeliveryPair] = []
-    distance_matrix: list[list[int]]    # pre-computed, always required
-    duration_matrix: list[list[int]] = []  # VRPTW: travel times in seconds
+    locations: List[Location] = Field(min_length=2)
+    vehicles: List[Vehicle] = Field(min_length=1)
+    pickup_delivery_pairs: List[PickupDeliveryPair] = []
+    distance_matrix: List[List[int]]    # pre-computed, always required
+    duration_matrix: List[List[int]] = []  # VRPTW: travel times in seconds

@@ -1,8 +1,7 @@
-// Google Maps JavaScript API key.
+// Google Maps API key (shared between frontend and backend).
 // Restrict this key in GCP Console to:
-//   - HTTP referrers: https://schiggy-3000.github.io/*
-//   - APIs: Maps JavaScript API, Geocoding API
-export const MAPS_JS_API_KEY = "YOUR_MAPS_JS_API_KEY_HERE";
+//   - APIs: Maps JavaScript API, Geocoding API, Distance Matrix API
+export const MAPS_JS_API_KEY = "AIzaSyCKtRoEu4ls0P25BYQnufPbSl5kIfxx-pg";
 
-// Cloud Run backend URL — update after first deploy.
-export const BACKEND_URL = "https://YOUR_CLOUD_RUN_URL_HERE";
+// Cloud Run backend URL
+export const BACKEND_URL = "https://google-cloud-run-vrp-454497244078.europe-west4.run.app";

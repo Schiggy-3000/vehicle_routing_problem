@@ -8,9 +8,9 @@ on:
 
 env:
   PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
-  SERVICE_NAME: vrp-backend
-  REGION: us-central1
-  IMAGE: gcr.io/${{ secrets.GCP_PROJECT_ID }}/vrp-backend
+  SERVICE_NAME: google-cloud-run-vrp
+  REGION: europe-west4
+  IMAGE: gcr.io/${{ secrets.GCP_PROJECT_ID }}/google-cloud-run-vrp
 
 jobs:
   deploy:
@@ -26,6 +26,17 @@ jobs:
 
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Run backend tests
+        run: |
+          cd backend
+          pip install -r requirements.txt
+          python -m pytest tests/ -v
 
       - name: Build and push Docker image
         run: |

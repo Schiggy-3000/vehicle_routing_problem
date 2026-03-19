@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from ortools.constraint_solver import pywrapcp
 
 from app.models.request_models import SolveRequest
