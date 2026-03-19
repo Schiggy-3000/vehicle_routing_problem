@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.routers import distance, solve
 
-app = FastAPI(title="VRP Solver API", version="1.0.1")
+app = FastAPI(title="VRP Solver API", version="1.1.0")
 
 # Allow requests from GitHub Pages and local development
 app.add_middleware(
