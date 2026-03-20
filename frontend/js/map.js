@@ -36,8 +36,8 @@ export function initMap(onClickCallback) {
 
 function _createMap(onClickCallback) {
   map = new google.maps.Map(document.getElementById("map"), {
-    center: { lat: 35.15, lng: -90.05 }, // Memphis, TN
-    zoom: 11,
+    center: { lat: 47.25, lng: 8.10 }, // Central Switzerland
+    zoom: 9,
     mapTypeControl: false,
     streetViewControl: false,
   });

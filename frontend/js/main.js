@@ -27,25 +27,13 @@ export function setStatus(msg, isError = false) {
   el.style.color = isError ? "#c62828" : "#555";
 }
 
-// ── Memphis demo fixture ─────────────────────────────────────────────
-const MEMPHIS_DEMO = {
+// ── Swiss demo fixture ───────────────────────────────────────────────
+const SWISS_DEMO = {
   locations: [
-    { id: "loc_0", label: "Hacks Cross Rd (Depot)", address: "3610 Hacks Cross Rd, Memphis, TN", lat: 35.0496, lng: -89.8581, demand: 0, time_window: [0, 86400] },
-    { id: "loc_1", label: "Elvis Presley Blvd",     address: "1921 Elvis Presley Blvd, Memphis, TN", lat: 35.0465, lng: -90.0271, demand: 5, time_window: [0, 86400] },
-    { id: "loc_2", label: "Union Avenue",           address: "149 Union Avenue, Memphis, TN", lat: 35.1495, lng: -90.0490, demand: 5, time_window: [0, 86400] },
-    { id: "loc_3", label: "Audubon Drive",          address: "1034 Audubon Drive, Memphis, TN", lat: 35.1168, lng: -89.9549, demand: 5, time_window: [0, 86400] },
-  ],
-  distanceMatrix: [
-    [0, 25288, 33362, 14933],
-    [26314, 0, 8795, 11802],
-    [34057, 8968, 0, 14082],
-    [15511, 12071, 13930, 0],
-  ],
-  durationMatrix: [
-    [0, 1823, 2403, 1076],
-    [1896, 0, 634, 851],
-    [2452, 646, 0, 1015],
-    [1118, 870, 1004, 0],
+    { id: "loc_0", label: "Galliker LC 3 (Depot)",  address: "Galliker LC 3, Industriepark, 6252 Dagmersellen", lat: 47.2080684, lng: 7.9770576, demand: 0, time_window: [0, 86400] },
+    { id: "loc_1", label: "Ottos Sport Outlet",     address: "Infanteriestrasse 12, 6210 Sursee",               lat: 47.1807265, lng: 8.1049023, demand: 5, time_window: [0, 86400] },
+    { id: "loc_2", label: "Adidas Outlet Cham",     address: "Brunnmatt 14, 6330 Cham",                         lat: 47.192036,  lng: 8.448365,  demand: 5, time_window: [0, 86400] },
+    { id: "loc_3", label: "Coop Aarau",             address: "Tellistrasse 67, 5004 Aarau",                     lat: 47.3984877, lng: 8.0586177, demand: 5, time_window: [0, 86400] },
   ],
 };
 
@@ -122,16 +110,16 @@ function loadDemo() {
   clearRoutes();
   resetLocations();
 
-  MEMPHIS_DEMO.locations.forEach((loc, i) => {
+  SWISS_DEMO.locations.forEach((loc, i) => {
     state.locations.push({ ...loc });
     addMarker({ lat: loc.lat, lng: loc.lng, label: loc.label, isDepot: i === 0 });
   });
 
-  state.distanceMatrix = MEMPHIS_DEMO.distanceMatrix;
-  state.durationMatrix = MEMPHIS_DEMO.durationMatrix;
+  state.distanceMatrix = null;
+  state.durationMatrix = null;
 
   renderLocationList();
-  setStatus("Memphis demo loaded. Click Solve to run.");
+  setStatus("Swiss demo loaded. Click Solve to run.");
   updateButtons();
 }
 
