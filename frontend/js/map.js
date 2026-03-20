@@ -121,8 +121,8 @@ export async function drawRoute(stops, vehicleIndex) {
     });
 
     polylines.push(renderer);
-  } catch {
-    // Fallback to straight lines if Directions API fails
+  } catch (err) {
+    console.warn("Directions API failed, falling back to straight lines:", err);
     _drawStraightLine(stops, color);
   }
 }
@@ -160,10 +160,10 @@ function _pinIcon(fillColor) {
   };
 }
 
-export function fitBoundsToMarkers() {
-  if (!map || markers.length === 0) return;
+export function fitBoundsToLocations(locations) {
+  if (!map || !locations || locations.length === 0) return;
   const bounds = new google.maps.LatLngBounds();
-  markers.forEach((m) => bounds.extend(m.getPosition()));
+  locations.forEach((loc) => bounds.extend({ lat: loc.lat, lng: loc.lng }));
   map.fitBounds(bounds, 60); // 60px padding
 }
 
