@@ -4,9 +4,10 @@
  * (demand for CVRP, time windows for VRPTW).
  */
 import { state, setStatus } from "../main.js";
-import { addMarker } from "../map.js";
+import { addMarker, highlightMarker, unhighlightMarker } from "../map.js";
 
 let _locationCounter = 0;
+let _crossHighlightInitialized = false;
 
 export function setLocationCounter(value) {
   _locationCounter = value;
@@ -39,6 +40,19 @@ export function renderLocationList() {
   const ul = document.getElementById("location-list");
   const hint = document.getElementById("hint-click-map");
 
+  // Set up cross-highlighting from map markers (once)
+  if (!_crossHighlightInitialized) {
+    _crossHighlightInitialized = true;
+    document.addEventListener("marker-hover", (e) => {
+      document.querySelectorAll(".loc-item").forEach((item) => item.classList.remove("loc-hover"));
+      const target = document.querySelector(`.loc-item[data-index="${e.detail.index}"]`);
+      if (target) target.classList.add("loc-hover");
+    });
+    document.addEventListener("marker-hover-end", () => {
+      document.querySelectorAll(".loc-item").forEach((item) => item.classList.remove("loc-hover"));
+    });
+  }
+
   if (state.locations.length === 0) {
     ul.innerHTML = "";
     hint.style.display = "";
@@ -52,6 +66,7 @@ export function renderLocationList() {
   ul.innerHTML = state.locations.map((loc, i) => {
     const isDepot = i === state.depotIndex;
     const badge = `<span class="loc-badge ${isDepot ? "depot" : ""}">${isDepot ? "Depot" : "Stop"}</span>`;
+    const indexCircle = `<span class="loc-index ${isDepot ? "depot" : ""}">${isDepot ? "D" : i}</span>`;
 
     let extras = "";
     if (showDemands && !isDepot) {
@@ -73,10 +88,11 @@ export function renderLocationList() {
     }
 
     return `
-      <li>
+      <li class="loc-item" data-index="${i}">
+        ${indexCircle}
         <span class="loc-label">${loc.label}</span>
         ${badge}
-        ${!isDepot ? `<button class="btn-remove" data-id="${loc.id}" title="Remove">×</button>` : ""}
+        ${!isDepot ? `<button class="btn-remove" data-id="${loc.id}" title="Remove">&times;</button>` : ""}
       </li>
       ${extras}`;
   }).join("");
@@ -84,6 +100,13 @@ export function renderLocationList() {
   // Remove-location handlers
   ul.querySelectorAll(".btn-remove").forEach((btn) => {
     btn.addEventListener("click", () => removeLocation(btn.dataset.id));
+  });
+
+  // Sidebar → map hover cross-highlighting
+  ul.querySelectorAll(".loc-item").forEach((li) => {
+    const index = parseInt(li.dataset.index);
+    li.addEventListener("mouseenter", () => highlightMarker(index));
+    li.addEventListener("mouseleave", () => unhighlightMarker(index));
   });
 
   // Demand input handlers

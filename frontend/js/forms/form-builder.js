@@ -29,11 +29,11 @@ export function rebuildForm() {
   if (cfg.showDemands) {
     constraintSection.style.display = "";
     constraintTitle.textContent = "Demands (per location)";
-    constraintContent.innerHTML = "<p style='font-size:0.8rem;color:#888;'>Set demand for each location in the Locations list above.</p>";
+    constraintContent.innerHTML = `<p class="hint-text">Set demand for each location in the Locations list above.</p>`;
   } else if (cfg.showTimeWindows) {
     constraintSection.style.display = "";
     constraintTitle.textContent = "Time Windows";
-    constraintContent.innerHTML = "<p style='font-size:0.8rem;color:#888;'>Set open/close times for each location in the Locations list above.</p>";
+    constraintContent.innerHTML = `<p class="hint-text">Set open/close times for each location in the Locations list above.</p>`;
   } else if (cfg.showPdPairs) {
     constraintSection.style.display = "";
     constraintTitle.textContent = "Pickup & Delivery Pairs";
@@ -101,11 +101,11 @@ function renderPdPairsHTML() {
     .join("");
 
   return `
-    <ul id="pd-pairs-list">${pairs || "<li style='color:#aaa;font-size:0.8rem;'>No pairs yet.</li>"}</ul>
+    <ul id="pd-pairs-list">${pairs || `<li class="hint-text">No pairs yet.</li>`}</ul>
     <div class="pd-add-row">
       <select id="pd-pickup-sel">${options}</select>
       <select id="pd-delivery-sel">${options}</select>
-      <button class="btn btn-outline" id="btn-add-pair" style="padding:4px 8px;font-size:0.8rem;">Add</button>
+      <button class="btn btn-outline btn-sm" id="btn-add-pair">Add</button>
     </div>`;
 }
 

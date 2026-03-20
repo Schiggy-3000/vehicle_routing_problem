@@ -55,7 +55,7 @@
     <!-- Load Swiss demo -->
     <div class="sidebar-section">
       <button class="btn btn-outline" id="btn-demo" style="width:100%;">
-        Load Swiss Demo
+        Load Demo Data
       </button>
     </div>
 
@@ -80,7 +80,15 @@
 </div>
 
 <!-- Loading overlay -->
-<div id="loader">Solving…</div>
+<div id="loader">
+  <div class="loader-content">
+    <div class="spinner"></div>
+    <span>Solving…</span>
+  </div>
+</div>
+
+<!-- Toast notifications -->
+<div id="toast-container"></div>
 
 <!-- Google Maps JS API — loaded dynamically by map.js -->
 <script type="module" src="js/main.js"></script>

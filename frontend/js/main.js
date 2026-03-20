@@ -2,7 +2,7 @@
  * Application controller.
  * Owns global state and wires all UI events to the correct modules.
  */
-import { initMap, clearMarkers, addMarker, clearRoutes } from "./map.js";
+import { initMap, clearMarkers, addMarker, clearRoutes, fitBoundsToLocations } from "./map.js";
 import { addLocationFromMapClick, renderLocationList, resetLocations, setLocationCounter, updateButtonStates } from "./forms/location-form.js";
 import { rebuildForm } from "./forms/form-builder.js";
 import { solve } from "./api.js";
@@ -25,7 +25,29 @@ export const state = {
 export function setStatus(msg, isError = false) {
   const el = document.getElementById("status-msg");
   el.textContent = msg;
-  el.style.color = isError ? "#c62828" : "#555";
+  el.style.color = isError ? "var(--error)" : "var(--text-muted)";
+}
+
+// ── Toast notifications ─────────────────────────────────────────────
+export function showToast(message, type = "info", duration = 5000) {
+  const container = document.getElementById("toast-container");
+  const toast = document.createElement("div");
+  toast.className = `toast toast-${type}`;
+  toast.textContent = message;
+  container.appendChild(toast);
+
+  // Trigger slide-in on next frame
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => toast.classList.add("visible"));
+  });
+
+  // Auto-dismiss
+  setTimeout(() => {
+    toast.classList.remove("visible");
+    toast.addEventListener("transitionend", () => toast.remove(), { once: true });
+    // Fallback removal if transitionend doesn't fire
+    setTimeout(() => { if (toast.parentNode) toast.remove(); }, 500);
+  }, duration);
 }
 
 // ── Swiss demo fixture ───────────────────────────────────────────────
@@ -72,17 +94,25 @@ async function init() {
       const payload = buildPayload();
       const response = await solve(payload);
       state.solution = response;
-      await renderRoutes(response);
-      renderTable(response, state.problemType);
-      setStatus(response.status === "SUCCESS" ? "Solution found." : "No solution found.");
+
+      if (response.status === "SUCCESS") {
+        // Fit map BEFORE rendering routes (await idle event to avoid paint race)
+        await fitBoundsToLocations(state.locations);
+        await renderRoutes(response);
+        renderTable(response, state.problemType);
+        showToast("Solution found!", "success");
+      } else {
+        renderTable(response, state.problemType);
+        showToast("No solution found. Try relaxing constraints or adding more vehicles.", "error", 7000);
+      }
     } catch (err) {
-      setStatus(`Error: ${err.message}`, true);
+      showToast(`Error: ${err.message}`, "error", 7000);
     } finally {
       hideLoader();
     }
   });
 
-  // Load Memphis demo
+  // Load demo
   document.getElementById("btn-demo").addEventListener("click", () => {
     loadDemo();
   });
@@ -133,13 +163,14 @@ function loadDemo() {
   state.durationMatrix = null;
 
   renderLocationList();
-  setStatus("Swiss demo loaded. Click Solve to run.");
+  showToast("Demo data loaded. Click Solve to run.", "info");
   updateButtonStates();
 }
 
 function showLoader(msg = "Working…") {
   const loader = document.getElementById("loader");
-  loader.textContent = msg;
+  const span = loader.querySelector("span");
+  if (span) span.textContent = msg;
   loader.classList.add("visible");
 }
 

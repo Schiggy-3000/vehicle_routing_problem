@@ -4,12 +4,12 @@
  */
 import { MAPS_JS_API_KEY } from "./config.js";
 
-const VEHICLE_COLORS = ["#1a73e8", "#e53935", "#43a047", "#fb8c00", "#8e24aa"];
-const DEPOT_COLOR = "#212121";
+const VEHICLE_COLORS = ["#2563eb", "#c4653a", "#2e7d32", "#9333ea", "#d97706"];
+const DEPOT_COLOR = "#1a1a18";
 
 let map = null;
 let markers = [];
-let polylines = [];       // stores Polylines or DirectionsRenderers
+let routeObjects = [];   // { type: 'renderer'|'polyline', obj, vehicleIndex, color, hoverOverlay? }
 let directionsService = null;
 
 // ── Init ────────────────────────────────────────────────────────────
@@ -52,7 +52,8 @@ function _createMap(onClickCallback) {
 // ── Markers ─────────────────────────────────────────────────────────
 
 export function addMarker({ lat, lng, label, isDepot = false }) {
-  const color = isDepot ? DEPOT_COLOR : "#1a73e8";
+  const color = isDepot ? DEPOT_COLOR : "#2563eb";
+  const index = markers.length;
 
   const marker = new google.maps.Marker({
     position: { lat, lng },
@@ -60,11 +61,19 @@ export function addMarker({ lat, lng, label, isDepot = false }) {
     title: label,
     icon: _pinIcon(color),
     label: {
-      text: isDepot ? "D" : String(markers.length),
+      text: isDepot ? "D" : String(index),
       color: "#fff",
       fontSize: "11px",
       fontWeight: "bold",
     },
+  });
+
+  // Cross-highlighting with sidebar
+  marker.addListener("mouseover", () => {
+    document.dispatchEvent(new CustomEvent("marker-hover", { detail: { index } }));
+  });
+  marker.addListener("mouseout", () => {
+    document.dispatchEvent(new CustomEvent("marker-hover-end"));
   });
 
   markers.push(marker);
@@ -74,6 +83,19 @@ export function addMarker({ lat, lng, label, isDepot = false }) {
 export function clearMarkers() {
   markers.forEach((m) => m.setMap(null));
   markers = [];
+}
+
+export function highlightMarker(index) {
+  if (!markers[index]) return;
+  markers[index].setIcon(_pinIcon(markers[index].getIcon().fillColor, 2.0));
+  markers[index].setZIndex(999);
+}
+
+export function unhighlightMarker(index) {
+  if (!markers[index]) return;
+  const isDepot = index === 0;
+  markers[index].setIcon(_pinIcon(isDepot ? DEPOT_COLOR : "#2563eb"));
+  markers[index].setZIndex(undefined);
 }
 
 // ── Routes ──────────────────────────────────────────────────────────
@@ -98,7 +120,7 @@ export async function drawRoute(stops, vehicleIndex) {
 
     // Directions API supports up to 25 waypoints; fall back to polylines if exceeded
     if (waypoints.length > 23) {
-      _drawStraightLine(stops, color);
+      _drawStraightLine(stops, color, vehicleIndex);
       return;
     }
 
@@ -120,14 +142,26 @@ export async function drawRoute(stops, vehicleIndex) {
       },
     });
 
-    polylines.push(renderer);
+    // Create invisible overlay polyline for hover detection on DirectionsRenderer
+    const overviewPath = result.routes[0].overview_path;
+    const hoverOverlay = new google.maps.Polyline({
+      path: overviewPath,
+      strokeOpacity: 0.001,
+      strokeWeight: 20,
+      map,
+      zIndex: 5,
+    });
+
+    const routeObj = { type: "renderer", obj: renderer, vehicleIndex, color, hoverOverlay };
+    _addRouteHoverListeners(hoverOverlay, vehicleIndex);
+    routeObjects.push(routeObj);
   } catch {
     // Fallback to straight lines if Directions API fails
-    _drawStraightLine(stops, color);
+    _drawStraightLine(stops, color, vehicleIndex);
   }
 }
 
-function _drawStraightLine(stops, color) {
+function _drawStraightLine(stops, color, vehicleIndex) {
   const path = stops.map((s) => ({ lat: s.lat, lng: s.lng }));
   const polyline = new google.maps.Polyline({
     path,
@@ -137,25 +171,88 @@ function _drawStraightLine(stops, color) {
     strokeWeight: 4,
     map,
   });
-  polylines.push(polyline);
+
+  const routeObj = { type: "polyline", obj: polyline, vehicleIndex, color };
+  _addRouteHoverListeners(polyline, vehicleIndex);
+  routeObjects.push(routeObj);
+}
+
+function _addRouteHoverListeners(target, vehicleIndex) {
+  target.addListener("mouseover", () => {
+    highlightRoute(vehicleIndex);
+    document.dispatchEvent(new CustomEvent("route-hover", { detail: { vehicleIndex } }));
+  });
+  target.addListener("mouseout", () => {
+    unhighlightAllRoutes();
+    document.dispatchEvent(new CustomEvent("route-hover-end"));
+  });
+}
+
+export function highlightRoute(vehicleIndex) {
+  routeObjects.forEach((ro) => {
+    if (ro.vehicleIndex === vehicleIndex) {
+      _setRouteStyle(ro, { strokeWeight: 7, strokeOpacity: 1.0 });
+    } else {
+      _setRouteStyle(ro, { strokeWeight: 3, strokeOpacity: 0.3 });
+    }
+  });
+}
+
+export function unhighlightAllRoutes() {
+  routeObjects.forEach((ro) => {
+    _setRouteStyle(ro, { strokeWeight: 4, strokeOpacity: 0.85 });
+  });
+}
+
+function _setRouteStyle(routeObj, { strokeWeight, strokeOpacity }) {
+  if (routeObj.type === "polyline") {
+    routeObj.obj.setOptions({ strokeWeight, strokeOpacity });
+  } else if (routeObj.type === "renderer") {
+    routeObj.obj.setOptions({
+      polylineOptions: {
+        strokeColor: routeObj.color,
+        strokeWeight,
+        strokeOpacity,
+      },
+    });
+  }
 }
 
 export function clearRoutes() {
-  polylines.forEach((p) => p.setMap(null));
-  polylines = [];
+  routeObjects.forEach((ro) => {
+    ro.obj.setMap(null);
+    if (ro.hoverOverlay) ro.hoverOverlay.setMap(null);
+  });
+  routeObjects = [];
   directionsService = null;
+}
+
+// ── Fit bounds ──────────────────────────────────────────────────────
+
+export function fitBoundsToLocations(locations) {
+  return new Promise((resolve) => {
+    if (!map || !locations || locations.length === 0) { resolve(); return; }
+    const bounds = new google.maps.LatLngBounds();
+    locations.forEach((loc) => bounds.extend({ lat: loc.lat, lng: loc.lng }));
+    map.fitBounds(bounds, 60);
+    // Wait for map to finish animating before resolving
+    let resolved = false;
+    const done = () => { if (!resolved) { resolved = true; resolve(); } };
+    google.maps.event.addListenerOnce(map, "idle", done);
+    setTimeout(done, 2000); // safety fallback
+  });
 }
 
 // ── Helpers ─────────────────────────────────────────────────────────
 
-function _pinIcon(fillColor) {
+function _pinIcon(fillColor, scale = 1.5) {
   return {
     path: "M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z",
     fillColor,
     fillOpacity: 1,
     strokeColor: "#fff",
     strokeWeight: 1.5,
-    scale: 1.5,
+    scale,
     anchor: new google.maps.Point(12, 22),
   };
 }
