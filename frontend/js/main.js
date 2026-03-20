@@ -5,7 +5,7 @@
 import { initMap, clearMarkers, addMarker, clearRoutes } from "./map.js";
 import { addLocationFromMapClick, renderLocationList, resetLocations } from "./forms/location-form.js";
 import { rebuildForm } from "./forms/form-builder.js";
-import { fetchDistanceMatrix, solve } from "./api.js";
+import { solve } from "./api.js";
 import { renderRoutes } from "./results/solution-renderer.js";
 import { renderTable } from "./results/solution-table.js";
 
@@ -66,28 +66,10 @@ async function init() {
     setStatus("");
   });
 
-  // Compute distances
-  document.getElementById("btn-distances").addEventListener("click", async () => {
-    if (state.locations.length < 2) return;
-    showLoader("Computing distances…");
-    try {
-      const addresses = state.locations.map((l) => l.address);
-      const result = await fetchDistanceMatrix(addresses);
-      state.distanceMatrix = result.matrix;
-      state.durationMatrix = result.duration_matrix;
-      setStatus("Distances computed. Ready to solve.");
-      updateButtons();
-    } catch (err) {
-      setStatus(`Error: ${err.message}`, true);
-    } finally {
-      hideLoader();
-    }
-  });
-
   // Solve
   document.getElementById("btn-solve").addEventListener("click", async () => {
-    if (!state.distanceMatrix) return;
-    showLoader("Solving…");
+    if (state.locations.length < 2) return;
+    showLoader("Computing distances & solving…");
     clearRoutes();
     document.getElementById("results-panel").classList.remove("visible");
     try {
@@ -130,7 +112,7 @@ function buildPayload() {
     locations: state.locations,
     vehicles: state.vehicles,
     pickup_delivery_pairs: state.pickupDeliveryPairs,
-    distance_matrix: state.distanceMatrix,
+    distance_matrix: state.distanceMatrix ?? [],
     duration_matrix: state.durationMatrix ?? [],
   };
 }
@@ -154,9 +136,7 @@ function loadDemo() {
 }
 
 function updateButtons() {
-  const enough = state.locations.length >= 2;
-  document.getElementById("btn-distances").disabled = !enough;
-  document.getElementById("btn-solve").disabled = !enough || !state.distanceMatrix;
+  document.getElementById("btn-solve").disabled = state.locations.length < 2;
 }
 
 function showLoader(msg = "Working…") {

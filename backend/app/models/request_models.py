@@ -29,5 +29,5 @@ class SolveRequest(BaseModel):
     locations: List[Location] = Field(min_length=2)
     vehicles: List[Vehicle] = Field(min_length=1)
     pickup_delivery_pairs: List[PickupDeliveryPair] = []
-    distance_matrix: List[List[int]]    # pre-computed, always required
+    distance_matrix: List[List[int]] = []  # pre-computed; auto-computed from addresses if empty
     duration_matrix: List[List[int]] = []  # VRPTW: travel times in seconds
