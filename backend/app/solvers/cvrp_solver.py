@@ -1,5 +1,3 @@
-from ortools.constraint_solver import pywrapcp
-
 from app.solvers.base_solver import BaseSolver
 
 
@@ -9,17 +7,7 @@ class CvrpSolver(BaseSolver):
     """
 
     def _add_constraints(self) -> None:
-        # Distance dimension (balance routes)
-        max_distance = max(v.max_distance for v in self.request.vehicles)
-        self.routing.AddDimension(
-            self.transit_callback_index,
-            0,
-            max_distance,
-            True,
-            "Distance",
-        )
-        distance_dimension = self.routing.GetDimensionOrDie("Distance")
-        distance_dimension.SetGlobalSpanCostCoefficient(100)
+        self._add_distance_dimension()
 
         # Capacity dimension
         locations = self.request.locations

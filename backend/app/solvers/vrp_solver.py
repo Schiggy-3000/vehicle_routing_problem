@@ -9,15 +9,4 @@ class VrpSolver(BaseSolver):
     """
 
     def _add_constraints(self) -> None:
-        max_distance = max(v.max_distance for v in self.request.vehicles)
-
-        self.routing.AddDimension(
-            self.transit_callback_index,
-            0,           # no slack
-            max_distance,
-            True,        # start_cumul_to_zero
-            "Distance",
-        )
-        distance_dimension = self.routing.GetDimensionOrDie("Distance")
-        # Penalise imbalanced routes — matches the notebook's coefficient
-        distance_dimension.SetGlobalSpanCostCoefficient(100)
+        self._add_distance_dimension()

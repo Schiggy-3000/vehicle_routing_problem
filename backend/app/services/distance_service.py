@@ -64,7 +64,7 @@ def _send_request(
     }
     url = f"{_API_URL}?{urllib.parse.urlencode(params)}"
 
-    with urllib.request.urlopen(url) as response:
+    with urllib.request.urlopen(url, timeout=30) as response:
         data = json.loads(response.read().decode())
 
     if data["status"] != "OK":

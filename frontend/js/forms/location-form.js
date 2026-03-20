@@ -126,7 +126,7 @@ function removeLocation(id) {
   setStatus("");
 }
 
-function updateButtonStates() {
+export function updateButtonStates() {
   document.getElementById("btn-solve").disabled = state.locations.length < 2;
 }
 

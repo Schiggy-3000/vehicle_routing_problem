@@ -1,3 +1,4 @@
+# Legacy Jupyter notebook dependencies — not used by the backend Docker image
 absl-py==2.4.0
 asttokens==3.0.1
 certifi==2026.2.25

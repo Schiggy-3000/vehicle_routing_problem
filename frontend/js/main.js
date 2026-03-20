@@ -3,7 +3,7 @@
  * Owns global state and wires all UI events to the correct modules.
  */
 import { initMap, clearMarkers, addMarker, clearRoutes } from "./map.js";
-import { addLocationFromMapClick, renderLocationList, resetLocations, setLocationCounter } from "./forms/location-form.js";
+import { addLocationFromMapClick, renderLocationList, resetLocations, setLocationCounter, updateButtonStates } from "./forms/location-form.js";
 import { rebuildForm } from "./forms/form-builder.js";
 import { solve } from "./api.js";
 import { renderRoutes } from "./results/solution-renderer.js";
@@ -50,7 +50,7 @@ async function init() {
     document.getElementById("results-panel").classList.remove("visible");
     rebuildForm();
     renderLocationList();
-    updateButtons();
+    updateButtonStates();
     setStatus("");
   });
 
@@ -88,7 +88,7 @@ async function init() {
     state.solution = null;
     document.getElementById("results-panel").classList.remove("visible");
     setStatus("");
-    updateButtons();
+    updateButtonStates();
   });
 }
 
@@ -123,11 +123,7 @@ function loadDemo() {
 
   renderLocationList();
   setStatus("Swiss demo loaded. Click Solve to run.");
-  updateButtons();
-}
-
-function updateButtons() {
-  document.getElementById("btn-solve").disabled = state.locations.length < 2;
+  updateButtonStates();
 }
 
 function showLoader(msg = "Working…") {

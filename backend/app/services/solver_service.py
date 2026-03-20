@@ -16,5 +16,7 @@ _SOLVER_MAP = {
 
 
 def solve(request: SolveRequest) -> SolveResponse:
-    solver_class = _SOLVER_MAP[request.problem_type]
+    solver_class = _SOLVER_MAP.get(request.problem_type)
+    if solver_class is None:
+        raise ValueError(f"Unknown problem type: {request.problem_type}")
     return solver_class(request).solve()

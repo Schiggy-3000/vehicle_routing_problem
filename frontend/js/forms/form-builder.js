@@ -3,6 +3,7 @@
  * Called whenever the user changes the problem type dropdown.
  */
 import { state } from "../main.js";
+import { renderLocationList } from "./location-form.js";
 
 const PROBLEM_CONFIG = {
   TSP:   { showVehicles: false, showDemands: false, showTimeWindows: false, showPdPairs: false },
@@ -43,7 +44,7 @@ export function rebuildForm() {
   }
 
   // Re-render location list to show/hide per-location fields
-  import("./location-form.js").then(({ renderLocationList }) => renderLocationList());
+  renderLocationList();
 }
 
 function renderVehicleFields() {

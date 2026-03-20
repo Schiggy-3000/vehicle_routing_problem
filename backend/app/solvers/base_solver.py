@@ -22,9 +22,31 @@ class BaseSolver(ABC):
         self.num_vehicles = len(request.vehicles)
         self.depot = request.depot_index
 
+        self._validate(request)
+
         self.manager: pywrapcp.RoutingIndexManager | None = None
         self.routing: pywrapcp.RoutingModel | None = None
         self.transit_callback_index: int | None = None
+
+    def _validate(self, request: SolveRequest) -> None:
+        if self.depot < 0 or self.depot >= self.num_locations:
+            raise ValueError(
+                f"depot_index {self.depot} out of range for "
+                f"{self.num_locations} locations"
+            )
+        if request.distance_matrix:
+            n = self.num_locations
+            if len(request.distance_matrix) != n:
+                raise ValueError(
+                    f"distance_matrix has {len(request.distance_matrix)} rows "
+                    f"but there are {n} locations"
+                )
+            for i, row in enumerate(request.distance_matrix):
+                if len(row) != n:
+                    raise ValueError(
+                        f"distance_matrix row {i} has {len(row)} columns, "
+                        f"expected {n}"
+                    )
 
     # ------------------------------------------------------------------
     # Setup helpers (mirror the notebook's step-by-step pattern)
@@ -46,6 +68,20 @@ class BaseSolver(ABC):
 
         self.transit_callback_index = self.routing.RegisterTransitCallback(distance_callback)
         self.routing.SetArcCostEvaluatorOfAllVehicles(self.transit_callback_index)
+
+    def _add_distance_dimension(self, span_cost_coefficient: int = 100):
+        """Add a Distance dimension with a global span cost. Returns the dimension."""
+        max_distance = max(v.max_distance for v in self.request.vehicles)
+        self.routing.AddDimension(
+            self.transit_callback_index,
+            0,
+            max_distance,
+            True,
+            "Distance",
+        )
+        dimension = self.routing.GetDimensionOrDie("Distance")
+        dimension.SetGlobalSpanCostCoefficient(span_cost_coefficient)
+        return dimension
 
     def _get_search_parameters(self) -> pywrapcp.DefaultRoutingSearchParameters:
         params = pywrapcp.DefaultRoutingSearchParameters()

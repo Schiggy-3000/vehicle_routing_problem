@@ -8,24 +8,18 @@ class PdpSolver(BaseSolver):
     """
 
     def _add_constraints(self) -> None:
-        max_distance = max(v.max_distance for v in self.request.vehicles)
-
-        # Distance dimension is required for precedence constraints
-        self.routing.AddDimension(
-            self.transit_callback_index,
-            0,
-            max_distance,
-            True,
-            "Distance",
-        )
-        distance_dimension = self.routing.GetDimensionOrDie("Distance")
+        distance_dimension = self._add_distance_dimension(span_cost_coefficient=0)
 
         locations = self.request.locations
         loc_id_to_index = {loc.id: i for i, loc in enumerate(locations)}
 
         for pair in self.request.pickup_delivery_pairs:
-            pickup_node = loc_id_to_index[pair.pickup_id]
-            delivery_node = loc_id_to_index[pair.delivery_id]
+            pickup_node = loc_id_to_index.get(pair.pickup_id)
+            if pickup_node is None:
+                raise ValueError(f"pickup_id '{pair.pickup_id}' not found in locations")
+            delivery_node = loc_id_to_index.get(pair.delivery_id)
+            if delivery_node is None:
+                raise ValueError(f"delivery_id '{pair.delivery_id}' not found in locations")
 
             pickup_index = self.manager.NodeToIndex(pickup_node)
             delivery_index = self.manager.NodeToIndex(delivery_node)
