@@ -33,7 +33,7 @@ jobs:
       - name: Run backend tests
         run: |
           cd backend
-          pip install -r requirements.txt
+          pip install -r requirements.txt pytest
           python -m pytest tests/ -v
 
       - name: Deploy to Cloud Run from source
