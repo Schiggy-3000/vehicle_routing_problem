@@ -19,8 +19,10 @@ class VrptwSolver(BaseSolver):
     def _add_constraints(self) -> None:
         time_callback_index = self.duration_callback_index
 
-        # Max time horizon: 24 hours in seconds
-        max_time = 86400
+        # Time horizon must cover the full day for time windows to work,
+        # but also respect user's max_time if larger than 24h.
+        vehicle_max_time = max(v.max_time for v in self.request.vehicles)
+        max_time = max(86400, vehicle_max_time)
 
         self.routing.AddDimension(
             time_callback_index,

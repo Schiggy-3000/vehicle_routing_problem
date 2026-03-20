@@ -10,7 +10,7 @@ class TspSolver(BaseSolver):
 
     def __init__(self, request: SolveRequest):
         # TSP always uses exactly 1 vehicle
-        request.vehicles = [Vehicle(id=0, max_distance=10_000_000)]
+        request.vehicles = [Vehicle(id=0, max_distance=10_000_000, max_time=360_000)]
         super().__init__(request)
 
     def _add_constraints(self) -> None:

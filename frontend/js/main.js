@@ -94,6 +94,8 @@ async function init() {
     resetLocations();
     state.pickupDeliveryPairs = [];
     state.solution = null;
+    state.optimizationObjective = "distance";
+    document.querySelector('input[name="objective"][value="distance"]').checked = true;
     document.getElementById("results-panel").classList.remove("visible");
     setStatus("");
     updateButtonStates();
