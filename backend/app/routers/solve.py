@@ -10,15 +10,10 @@ router = APIRouter()
 @router.post("/solve", response_model=SolveResponse)
 def solve(request: SolveRequest) -> SolveResponse:
     try:
-        # Auto-compute distance matrix from addresses when not provided
+        # Auto-compute distance matrix from coordinates when not provided
         if not request.distance_matrix:
-            addresses = [loc.address for loc in request.locations]
-            if not all(addresses):
-                raise ValueError(
-                    "distance_matrix is empty and not all locations have an address "
-                    "for auto-computation."
-                )
-            dist, dur = distance_service.get_distance_and_duration_matrices(addresses)
+            origins = [f"{loc.lat},{loc.lng}" for loc in request.locations]
+            dist, dur = distance_service.get_distance_and_duration_matrices(origins)
             request.distance_matrix = dist
             if not request.duration_matrix:
                 request.duration_matrix = dur

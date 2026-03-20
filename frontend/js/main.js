@@ -3,7 +3,7 @@
  * Owns global state and wires all UI events to the correct modules.
  */
 import { initMap, clearMarkers, addMarker, clearRoutes } from "./map.js";
-import { addLocationFromMapClick, renderLocationList, resetLocations } from "./forms/location-form.js";
+import { addLocationFromMapClick, renderLocationList, resetLocations, setLocationCounter } from "./forms/location-form.js";
 import { rebuildForm } from "./forms/form-builder.js";
 import { solve } from "./api.js";
 import { renderRoutes } from "./results/solution-renderer.js";
@@ -114,6 +114,9 @@ function loadDemo() {
     state.locations.push({ ...loc });
     addMarker({ lat: loc.lat, lng: loc.lng, label: loc.label, isDepot: i === 0 });
   });
+
+  // Advance the location counter past demo IDs so new pins don't collide
+  setLocationCounter(SWISS_DEMO.locations.length);
 
   state.distanceMatrix = null;
   state.durationMatrix = null;

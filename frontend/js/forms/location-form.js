@@ -8,6 +8,10 @@ import { addMarker } from "../map.js";
 
 let _locationCounter = 0;
 
+export function setLocationCounter(value) {
+  _locationCounter = value;
+}
+
 export function addLocationFromMapClick({ lat, lng }) {
   const isDepot = state.locations.length === 0;
   const id = `loc_${_locationCounter++}`;

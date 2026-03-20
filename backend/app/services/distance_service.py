@@ -60,7 +60,6 @@ def _send_request(
         "mode": "driving",
         "units": "metric",
         "language": "en",
-        "region": "us",
         "key": settings.google_maps_api_key,
     }
     url = f"{_API_URL}?{urllib.parse.urlencode(params)}"
