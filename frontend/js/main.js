@@ -14,7 +14,7 @@ export const state = {
   problemType: "VRP",
   depotIndex: 0,
   locations: [],
-  vehicles: [{ id: 0, capacity: 0, max_distance: 200_000 }, { id: 1, capacity: 0, max_distance: 200_000 }],
+  vehicles: [{ id: 0, capacity: 0, max_distance: 2_000_000 }, { id: 1, capacity: 0, max_distance: 2_000_000 }],
   pickupDeliveryPairs: [],
   distanceMatrix: null,
   durationMatrix: null,

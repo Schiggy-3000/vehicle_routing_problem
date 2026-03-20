@@ -62,7 +62,7 @@ function renderVehicleFields() {
     </div>` : ""}
     <div class="field-row">
       <label>Max distance (km)</label>
-      <input type="number" id="input-max-distance" min="1" value="${Math.round((state.vehicles[0]?.max_distance || 200000) / 1000)}" step="1" />
+      <input type="number" id="input-max-distance" min="1" value="${Math.round((state.vehicles[0]?.max_distance || 2000000) / 1000)}" step="1" />
     </div>
   `;
 
@@ -75,7 +75,7 @@ function renderVehicleFields() {
 function syncVehiclesFromFields() {
   const count    = parseInt(document.getElementById("input-vehicle-count")?.value || "2");
   const capacity = parseInt(document.getElementById("input-vehicle-capacity")?.value || "0");
-  const maxDistKm = parseInt(document.getElementById("input-max-distance")?.value || "200");
+  const maxDistKm = parseInt(document.getElementById("input-max-distance")?.value || "2000");
   const maxDist   = maxDistKm * 1000;
 
   state.vehicles = Array.from({ length: count }, (_, i) => ({
