@@ -64,8 +64,8 @@ async function init() {
       const payload = buildPayload();
       const response = await solve(payload);
       state.solution = response;
-      await renderRoutes(response);
       fitBoundsToLocations(state.locations);
+      await renderRoutes(response);
       renderTable(response, state.problemType);
       setStatus(response.status === "SUCCESS" ? "Solution found." : "No solution found.");
     } catch (err) {
