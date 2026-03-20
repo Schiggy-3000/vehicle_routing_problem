@@ -36,3 +36,5 @@ class PdpSolver(BaseSolver):
                 self.routing.VehicleVar(pickup_index)
                 == self.routing.VehicleVar(delivery_index)
             )
+
+        self._add_time_dimension()

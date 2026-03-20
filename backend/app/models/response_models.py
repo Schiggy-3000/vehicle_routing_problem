@@ -16,6 +16,7 @@ class VehicleRoute(BaseModel):
     vehicle_id: int
     stops: List[RouteStop]   # includes depot at start and end
     total_distance_m: int
+    total_duration_s: Optional[int] = None
     total_load: Optional[int] = None  # CVRP
 
 

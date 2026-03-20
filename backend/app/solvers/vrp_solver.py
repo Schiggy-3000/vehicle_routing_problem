@@ -10,3 +10,4 @@ class VrpSolver(BaseSolver):
 
     def _add_constraints(self) -> None:
         self._add_distance_dimension()
+        self._add_time_dimension()

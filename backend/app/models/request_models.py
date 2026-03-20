@@ -22,6 +22,7 @@ class Vehicle(BaseModel):
     id: int
     capacity: int = 0           # CVRP: vehicle capacity (0 = unlimited)
     max_distance: int = 2000000  # meters
+    max_time: int = 57600        # seconds (16 hours default)
 
 
 class SolveRequest(BaseModel):
@@ -30,5 +31,6 @@ class SolveRequest(BaseModel):
     locations: List[Location] = Field(min_length=2)
     vehicles: List[Vehicle] = Field(min_length=1)
     pickup_delivery_pairs: List[PickupDeliveryPair] = []
+    optimization_objective: Literal["distance", "time"] = "distance"
     distance_matrix: List[List[int]] = []  # pre-computed; auto-computed from addresses if empty
     duration_matrix: List[List[int]] = []  # VRPTW: travel times in seconds

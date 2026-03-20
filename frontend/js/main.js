@@ -14,8 +14,9 @@ export const state = {
   problemType: "VRP",
   depotIndex: 0,
   locations: [],
-  vehicles: [{ id: 0, capacity: 0, max_distance: 2_000_000 }, { id: 1, capacity: 0, max_distance: 2_000_000 }],
+  vehicles: [{ id: 0, capacity: 0, max_distance: 2_000_000, max_time: 57600 }, { id: 1, capacity: 0, max_distance: 2_000_000, max_time: 57600 }],
   pickupDeliveryPairs: [],
+  optimizationObjective: "distance",
   distanceMatrix: null,
   durationMatrix: null,
   solution: null,
@@ -52,6 +53,13 @@ async function init() {
     renderLocationList();
     updateButtonStates();
     setStatus("");
+  });
+
+  // Optimization objective radio buttons
+  document.querySelectorAll('input[name="objective"]').forEach((radio) => {
+    radio.addEventListener("change", (e) => {
+      state.optimizationObjective = e.target.value;
+    });
   });
 
   // Solve
@@ -97,6 +105,7 @@ function buildPayload() {
   return {
     problem_type: state.problemType,
     depot_index: state.depotIndex,
+    optimization_objective: state.optimizationObjective,
     locations: state.locations,
     vehicles: state.vehicles,
     pickup_delivery_pairs: state.pickupDeliveryPairs,

@@ -27,3 +27,5 @@ class CvrpSolver(BaseSolver):
             True,                # start_cumul_to_zero
             "Capacity",
         )
+
+        self._add_time_dimension()

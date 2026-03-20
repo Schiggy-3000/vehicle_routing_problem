@@ -14,5 +14,4 @@ class TspSolver(BaseSolver):
         super().__init__(request)
 
     def _add_constraints(self) -> None:
-        # Arc cost is already set in base class — no extra dimensions needed for TSP.
-        pass
+        self._add_time_dimension()

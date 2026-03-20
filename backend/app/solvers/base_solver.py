@@ -18,6 +18,8 @@ class BaseSolver(ABC):
     def __init__(self, request: SolveRequest):
         self.request = request
         self.matrix = request.distance_matrix
+        self.duration_matrix = request.duration_matrix or request.distance_matrix
+        self.objective = request.optimization_objective
         self.num_locations = len(request.locations)
         self.num_vehicles = len(request.vehicles)
         self.depot = request.depot_index
@@ -27,6 +29,8 @@ class BaseSolver(ABC):
         self.manager: pywrapcp.RoutingIndexManager | None = None
         self.routing: pywrapcp.RoutingModel | None = None
         self.transit_callback_index: int | None = None
+        self.distance_callback_index: int | None = None
+        self.duration_callback_index: int | None = None
 
     def _validate(self, request: SolveRequest) -> None:
         if self.depot < 0 or self.depot >= self.num_locations:
@@ -59,15 +63,24 @@ class BaseSolver(ABC):
         self.routing = pywrapcp.RoutingModel(self.manager)
 
     def _register_distance_callback(self) -> None:
-        matrix = self.matrix
+        dist_matrix = self.matrix
 
-        def distance_callback(from_index: int, to_index: int) -> int:
-            from_node = self.manager.IndexToNode(from_index)
-            to_node = self.manager.IndexToNode(to_index)
-            return matrix[from_node][to_node]
+        def distance_cb(from_index: int, to_index: int) -> int:
+            return dist_matrix[self.manager.IndexToNode(from_index)][self.manager.IndexToNode(to_index)]
 
-        self.transit_callback_index = self.routing.RegisterTransitCallback(distance_callback)
-        self.routing.SetArcCostEvaluatorOfAllVehicles(self.transit_callback_index)
+        self.distance_callback_index = self.routing.RegisterTransitCallback(distance_cb)
+        self.transit_callback_index = self.distance_callback_index  # used by _add_distance_dimension
+
+        dur_matrix = self.duration_matrix
+
+        def duration_cb(from_index: int, to_index: int) -> int:
+            return dur_matrix[self.manager.IndexToNode(from_index)][self.manager.IndexToNode(to_index)]
+
+        self.duration_callback_index = self.routing.RegisterTransitCallback(duration_cb)
+
+        # Arc cost = the optimization objective
+        arc_cost_index = self.duration_callback_index if self.objective == "time" else self.distance_callback_index
+        self.routing.SetArcCostEvaluatorOfAllVehicles(arc_cost_index)
 
     def _add_distance_dimension(self, span_cost_coefficient: int = 100):
         """Add a Distance dimension with a global span cost. Returns the dimension."""
@@ -80,6 +93,20 @@ class BaseSolver(ABC):
             "Distance",
         )
         dimension = self.routing.GetDimensionOrDie("Distance")
+        dimension.SetGlobalSpanCostCoefficient(span_cost_coefficient)
+        return dimension
+
+    def _add_time_dimension(self, span_cost_coefficient: int = 0):
+        """Add a Time dimension using the duration callback. Returns the dimension."""
+        max_time = max(v.max_time for v in self.request.vehicles)
+        self.routing.AddDimension(
+            self.duration_callback_index,
+            0,         # no slack (VRPTW overrides this)
+            max_time,
+            True,      # start_cumul_to_zero
+            "Time",
+        )
+        dimension = self.routing.GetDimensionOrDie("Time")
         dimension.SetGlobalSpanCostCoefficient(span_cost_coefficient)
         return dimension
 
@@ -119,6 +146,7 @@ class BaseSolver(ABC):
             index = self.routing.Start(vehicle_id)
             stops: list[RouteStop] = []
             route_distance = 0
+            route_duration = 0
             route_load = 0
 
             while not self.routing.IsEnd(index):
@@ -137,7 +165,9 @@ class BaseSolver(ABC):
                 route_load += loc.demand
 
                 next_index = solution.Value(self.routing.NextVar(index))
-                route_distance += self.matrix[node][self.manager.IndexToNode(next_index)]
+                next_node = self.manager.IndexToNode(next_index)
+                route_distance += self.matrix[node][next_node]
+                route_duration += self.duration_matrix[node][next_node]
                 index = next_index
 
             # Add final depot stop
@@ -158,6 +188,7 @@ class BaseSolver(ABC):
                     vehicle_id=vehicle_id,
                     stops=stops,
                     total_distance_m=route_distance,
+                    total_duration_s=route_duration,
                     total_load=route_load if route_load > 0 else None,
                 ))
 

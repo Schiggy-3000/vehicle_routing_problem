@@ -27,12 +27,13 @@ export function renderTable(solutionResponse, problemType) {
     }).join(" → ");
 
     const distStr = `${(route.total_distance_m / 1000).toFixed(1)} km`;
+    const timeStr = route.total_duration_s != null ? ` · ${Math.round(route.total_duration_s / 60)} min` : "";
     const loadStr = showLoad && route.total_load != null ? ` · Load: ${route.total_load}` : "";
 
     return `
       <div class="route-row">
         <strong style="color:${color}">Vehicle ${route.vehicle_id}</strong>
-        &nbsp;<small>${distStr}${loadStr}</small><br/>
+        &nbsp;<small>${distStr}${timeStr}${loadStr}</small><br/>
         <span class="route-stops">${stopsStr}</span>
       </div>`;
   }).join("");
