@@ -121,9 +121,7 @@ function removeLocation(id) {
 }
 
 function updateButtonStates() {
-  const enough = state.locations.length >= 2;
-  document.getElementById("btn-distances").disabled = !enough;
-  document.getElementById("btn-solve").disabled = !enough || !state.distanceMatrix;
+  document.getElementById("btn-solve").disabled = state.locations.length < 2;
 }
 
 export function resetLocations() {
