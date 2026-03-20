@@ -9,7 +9,8 @@ const DEPOT_COLOR = "#212121";
 
 let map = null;
 let markers = [];
-let polylines = [];
+let polylines = [];       // stores Polylines or DirectionsRenderers
+let directionsService = null;
 
 // ── Init ────────────────────────────────────────────────────────────
 
@@ -77,10 +78,57 @@ export function clearMarkers() {
 
 // ── Routes ──────────────────────────────────────────────────────────
 
-export function drawRoute(stops, vehicleIndex) {
+export async function drawRoute(stops, vehicleIndex) {
   const color = VEHICLE_COLORS[vehicleIndex % VEHICLE_COLORS.length];
-  const path = stops.map((s) => ({ lat: s.lat, lng: s.lng }));
 
+  if (stops.length < 2) return;
+
+  // Try Directions API for road-following routes
+  try {
+    if (!directionsService) {
+      directionsService = new google.maps.DirectionsService();
+    }
+
+    const origin = { lat: stops[0].lat, lng: stops[0].lng };
+    const destination = { lat: stops[stops.length - 1].lat, lng: stops[stops.length - 1].lng };
+    const waypoints = stops.slice(1, -1).map((s) => ({
+      location: { lat: s.lat, lng: s.lng },
+      stopover: true,
+    }));
+
+    // Directions API supports up to 25 waypoints; fall back to polylines if exceeded
+    if (waypoints.length > 23) {
+      _drawStraightLine(stops, color);
+      return;
+    }
+
+    const result = await directionsService.route({
+      origin,
+      destination,
+      waypoints,
+      travelMode: google.maps.TravelMode.DRIVING,
+    });
+
+    const renderer = new google.maps.DirectionsRenderer({
+      map,
+      directions: result,
+      suppressMarkers: true,
+      polylineOptions: {
+        strokeColor: color,
+        strokeWeight: 4,
+        strokeOpacity: 0.85,
+      },
+    });
+
+    polylines.push(renderer);
+  } catch {
+    // Fallback to straight lines if Directions API fails
+    _drawStraightLine(stops, color);
+  }
+}
+
+function _drawStraightLine(stops, color) {
+  const path = stops.map((s) => ({ lat: s.lat, lng: s.lng }));
   const polyline = new google.maps.Polyline({
     path,
     geodesic: true,
@@ -89,13 +137,13 @@ export function drawRoute(stops, vehicleIndex) {
     strokeWeight: 4,
     map,
   });
-
   polylines.push(polyline);
 }
 
 export function clearRoutes() {
   polylines.forEach((p) => p.setMap(null));
   polylines = [];
+  directionsService = null;
 }
 
 // ── Helpers ─────────────────────────────────────────────────────────
