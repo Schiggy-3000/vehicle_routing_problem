@@ -24,6 +24,8 @@ export function addLocationFromMapClick({ lat, lng }) {
   };
 
   state.locations.push(location);
+  state.distanceMatrix = null;
+  state.durationMatrix = null;
   addMarker({ lat, lng, label, isDepot });
   renderLocationList();
   updateButtonStates();
