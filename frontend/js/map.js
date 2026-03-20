@@ -160,6 +160,13 @@ function _pinIcon(fillColor) {
   };
 }
 
+export function fitBoundsToMarkers() {
+  if (!map || markers.length === 0) return;
+  const bounds = new google.maps.LatLngBounds();
+  markers.forEach((m) => bounds.extend(m.getPosition()));
+  map.fitBounds(bounds, 60); // 60px padding
+}
+
 export function getVehicleColor(vehicleIndex) {
   return VEHICLE_COLORS[vehicleIndex % VEHICLE_COLORS.length];
 }

@@ -2,7 +2,7 @@
  * Application controller.
  * Owns global state and wires all UI events to the correct modules.
  */
-import { initMap, clearMarkers, addMarker, clearRoutes } from "./map.js";
+import { initMap, clearMarkers, addMarker, clearRoutes, fitBoundsToMarkers } from "./map.js";
 import { addLocationFromMapClick, renderLocationList, resetLocations, setLocationCounter, updateButtonStates } from "./forms/location-form.js";
 import { rebuildForm } from "./forms/form-builder.js";
 import { solve } from "./api.js";
@@ -65,6 +65,7 @@ async function init() {
       const response = await solve(payload);
       state.solution = response;
       await renderRoutes(response);
+      fitBoundsToMarkers();
       renderTable(response, state.problemType);
       setStatus(response.status === "SUCCESS" ? "Solution found." : "No solution found.");
     } catch (err) {
