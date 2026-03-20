@@ -20,7 +20,7 @@ class PickupDeliveryPair(BaseModel):
 class Vehicle(BaseModel):
     id: int
     capacity: int = 0           # CVRP: vehicle capacity (0 = unlimited)
-    max_distance: int = 100000  # meters
+    max_distance: int = 200000  # meters
 
 
 class SolveRequest(BaseModel):
