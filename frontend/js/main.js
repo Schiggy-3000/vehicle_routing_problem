@@ -2,7 +2,7 @@
  * Application controller.
  * Owns global state and wires all UI events to the correct modules.
  */
-import { initMap, clearMarkers, addMarker, clearRoutes, fitBoundsToLocations } from "./map.js";
+import { initMap, clearMarkers, addMarker, clearRoutes, clearBestKnownRoutes, drawBestKnownRoute, fitBoundsToLocations } from "./map.js";
 import { addLocationFromMapClick, renderLocationList, resetLocations, setLocationCounter, updateButtonStates } from "./forms/location-form.js";
 import { rebuildForm } from "./forms/form-builder.js";
 import { solve } from "./api.js";
@@ -20,6 +20,8 @@ export const state = {
   distanceMatrix: null,
   durationMatrix: null,
   solution: null,
+  bestKnownRoutes: null,
+  instanceExpected: null,
 };
 
 export function setStatus(msg, isError = false) {
@@ -50,15 +52,7 @@ export function showToast(message, type = "info", duration = 5000) {
   }, duration);
 }
 
-// ── Swiss demo fixture ───────────────────────────────────────────────
-const SWISS_DEMO = {
-  locations: [
-    { id: "loc_0", label: "Galliker LC 3 (Depot)",  address: "Galliker LC 3, Industriepark, 6252 Dagmersellen", lat: 47.2080684, lng: 7.9770576, demand: 0, time_window: [0, 86400] },
-    { id: "loc_1", label: "Ottos Sport Outlet",     address: "Infanteriestrasse 12, 6210 Sursee",               lat: 47.1807265, lng: 8.1049023, demand: 5, time_window: [0, 86400] },
-    { id: "loc_2", label: "Adidas Outlet Cham",     address: "Brunnmatt 14, 6330 Cham",                         lat: 47.192036,  lng: 8.448365,  demand: 5, time_window: [0, 86400] },
-    { id: "loc_3", label: "Coop Aarau",             address: "Tellistrasse 67, 5004 Aarau",                     lat: 47.3984877, lng: 8.0586177, demand: 5, time_window: [0, 86400] },
-  ],
-};
+// ── Instance loader ──────────────────────────────────────────────────
 
 // ── Bootstrap ────────────────────────────────────────────────────────
 async function init() {
@@ -95,16 +89,27 @@ async function init() {
       const payload = buildPayload();
       const response = await solve(payload);
       state.solution = response;
+      clearBestKnownRoutes();
 
       if (response.status === "SUCCESS") {
         await renderRoutes(response);
+
+        // Draw best-known routes as dashed overlay
+        if (state.bestKnownRoutes) {
+          const locMap = Object.fromEntries(state.locations.map((l) => [l.id, l]));
+          state.bestKnownRoutes.forEach((bkr, i) => {
+            const stops = bkr.stop_ids.map((id) => locMap[id]).filter(Boolean);
+            if (stops.length >= 2) drawBestKnownRoute(stops, i);
+          });
+        }
+
         // Fit map AFTER rendering routes (routes are now plain Polylines, no viewport override)
         await fitBoundsToLocations(state.locations);
-        renderTable(response, state.problemType);
+        renderTable(response, state.problemType, state.instanceExpected);
         flashMapGlow("success");
         showToast("Solution found!", "success");
       } else {
-        renderTable(response, state.problemType);
+        renderTable(response, state.problemType, state.instanceExpected);
         flashMapGlow("error");
         showToast("No solution found. Try relaxing constraints or adding more vehicles.", "error", 7000);
       }
@@ -116,20 +121,24 @@ async function init() {
     }
   });
 
-  // Load demo
-  document.getElementById("btn-demo").addEventListener("click", () => {
-    loadDemo();
+  // Load instance
+  document.getElementById("instance-select").addEventListener("change", (e) => {
+    if (e.target.value) loadInstance(e.target.value);
   });
 
   // Reset
   document.getElementById("btn-reset").addEventListener("click", () => {
     clearMarkers();
     clearRoutes();
+    clearBestKnownRoutes();
     resetLocations();
     state.pickupDeliveryPairs = [];
     state.solution = null;
+    state.bestKnownRoutes = null;
+    state.instanceExpected = null;
     state.optimizationObjective = "distance";
     document.querySelector('input[name="objective"][value="distance"]').checked = true;
+    document.getElementById("instance-select").selectedIndex = 0;
     document.getElementById("results-panel").classList.remove("visible");
     setStatus("");
     updateButtonStates();
@@ -150,25 +159,61 @@ function buildPayload() {
   };
 }
 
-function loadDemo() {
-  clearMarkers();
-  clearRoutes();
-  resetLocations();
+async function loadInstance(path) {
+  try {
+    const resp = await fetch(`../test_instances/${path}.json`);
+    if (!resp.ok) throw new Error(`Failed to load instance: ${resp.status}`);
+    const data = await resp.json();
 
-  SWISS_DEMO.locations.forEach((loc, i) => {
-    state.locations.push({ ...loc });
-    addMarker({ lat: loc.lat, lng: loc.lng, label: loc.label, isDepot: i === 0 });
-  });
+    // Clear current state
+    clearMarkers();
+    clearRoutes();
+    clearBestKnownRoutes();
+    resetLocations();
+    document.getElementById("results-panel").classList.remove("visible");
 
-  // Advance the location counter past demo IDs so new pins don't collide
-  setLocationCounter(SWISS_DEMO.locations.length);
+    // Set problem type
+    state.problemType = data.problem_type;
+    document.getElementById("problem-type-select").value = data.problem_type;
 
-  state.distanceMatrix = null;
-  state.durationMatrix = null;
+    // Load locations
+    data.locations.forEach((loc, i) => {
+      state.locations.push({ ...loc });
+      addMarker({ lat: loc.lat, lng: loc.lng, label: loc.label, isDepot: i === 0 });
+    });
+    setLocationCounter(data.locations.length);
 
-  renderLocationList();
-  showToast("Demo data loaded. Click Solve to run.", "info");
-  updateButtonStates();
+    // Set vehicles
+    state.vehicles = data.vehicles.map((v) => ({ ...v }));
+
+    // Set pickup-delivery pairs
+    state.pickupDeliveryPairs = (data.pickup_delivery_pairs || []).map((p) => ({ ...p }));
+
+    // Set matrices (empty arrays trigger Google API auto-compute)
+    const dm = data.distance_matrix || [];
+    const tm = data.duration_matrix || [];
+    state.distanceMatrix = dm.length > 0 ? dm : null;
+    state.durationMatrix = tm.length > 0 ? tm : null;
+
+    // Set optimization objective
+    state.optimizationObjective = data.optimization_objective || "distance";
+    const objRadio = document.querySelector(`input[name="objective"][value="${state.optimizationObjective}"]`);
+    if (objRadio) objRadio.checked = true;
+
+    // Store best-known routes and expected values for comparison after solve
+    state.bestKnownRoutes = data.best_known_routes?.length ? data.best_known_routes : null;
+    state.instanceExpected = data.expected || null;
+
+    // Rebuild UI
+    rebuildForm();
+    renderLocationList();
+    updateButtonStates();
+    await fitBoundsToLocations(state.locations);
+
+    showToast(`Loaded: ${data.name}. Click Solve to run.`, "info");
+  } catch (err) {
+    showToast(`Error loading instance: ${err.message}`, "error", 7000);
+  }
 }
 
 function showLoader(msg = "Working…") {

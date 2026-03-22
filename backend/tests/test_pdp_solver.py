@@ -1,4 +1,4 @@
-from tests.fixtures import MEMPHIS_LOCATIONS, MEMPHIS_DISTANCE_MATRIX, MEMPHIS_DURATION_MATRIX
+from tests.fixtures import MEMPHIS_LOCATIONS, MEMPHIS_DISTANCE_MATRIX, MEMPHIS_DURATION_MATRIX, validate_or_fail
 from app.models.request_models import Location, PickupDeliveryPair, SolveRequest, Vehicle
 from app.solvers.pdp_solver import PdpSolver
 
@@ -23,6 +23,7 @@ def test_pdp_pickup_before_delivery():
     response = PdpSolver(request).solve()
 
     assert response.status == "SUCCESS"
+    validate_or_fail(request, response)
 
     for route in response.routes:
         ids = [s.location_id for s in route.stops]

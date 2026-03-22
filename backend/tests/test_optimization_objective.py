@@ -11,6 +11,7 @@ from tests.fixtures import (
     MEMPHIS_DISTANCE_MATRIX,
     MEMPHIS_DURATION_MATRIX,
     make_request,
+    validate_or_fail,
 )
 
 
@@ -21,12 +22,14 @@ def test_vrp_minimize_distance_returns_success():
     request = make_request("VRP", optimization_objective="distance")
     response = VrpSolver(request).solve()
     assert response.status == "SUCCESS"
+    validate_or_fail(request, response)
 
 
 def test_vrp_minimize_time_returns_success():
     request = make_request("VRP", optimization_objective="time")
     response = VrpSolver(request).solve()
     assert response.status == "SUCCESS"
+    validate_or_fail(request, response)
 
 
 def test_vrp_objective_differs_between_distance_and_time():
@@ -42,6 +45,8 @@ def test_vrp_objective_differs_between_distance_and_time():
 
     assert resp_dist.status == "SUCCESS"
     assert resp_time.status == "SUCCESS"
+    validate_or_fail(req_dist, resp_dist)
+    validate_or_fail(req_time, resp_time)
     # Objective values must differ because they measure different things
     assert resp_dist.objective_value != resp_time.objective_value
 
@@ -51,6 +56,7 @@ def test_tsp_minimize_time_returns_success():
     response = TspSolver(request).solve()
     assert response.status == "SUCCESS"
     assert len(response.routes) == 1
+    validate_or_fail(request, response)
 
 
 def test_cvrp_minimize_time_returns_success():
@@ -70,6 +76,7 @@ def test_cvrp_minimize_time_returns_success():
                            optimization_objective="time")
     response = CvrpSolver(request).solve()
     assert response.status == "SUCCESS"
+    validate_or_fail(request, response)
 
 
 # ── Duration in response ─────────────────────────────────────────────
@@ -79,6 +86,7 @@ def test_response_includes_total_duration():
     """Every route should report total_duration_s alongside total_distance_m."""
     request = make_request("VRP")
     response = VrpSolver(request).solve()
+    validate_or_fail(request, response)
 
     for route in response.routes:
         assert route.total_duration_s is not None
@@ -94,6 +102,7 @@ def test_duration_uses_duration_matrix():
     """
     request = make_request("VRP")
     response = VrpSolver(request).solve()
+    validate_or_fail(request, response)
 
     for route in response.routes:
         # Duration should be much smaller than distance (seconds vs meters)
@@ -107,6 +116,7 @@ def test_vrp_respects_max_time():
     """Routes should not exceed the vehicle's max_time."""
     request = make_request("VRP")
     response = VrpSolver(request).solve()
+    validate_or_fail(request, response)
 
     for route in response.routes:
         # With default max_time (57600s = 16h), routes should be well within limits
@@ -124,6 +134,7 @@ def test_vrp_tight_max_time_drops_visits_or_no_solution():
     ]
     request = make_request("VRP", vehicles=tight_vehicles)
     response = VrpSolver(request).solve()
+    validate_or_fail(request, response)
 
     if response.status == "SUCCESS":
         for route in response.routes:
@@ -137,6 +148,7 @@ def test_tsp_max_time_from_vehicle_model():
     request = make_request("TSP")
     response = TspSolver(request).solve()
     assert response.status == "SUCCESS"
+    validate_or_fail(request, response)
     assert response.routes[0].total_duration_s <= 360_000
 
 
@@ -154,6 +166,7 @@ def test_fallback_to_distance_matrix_when_no_duration():
     response = VrpSolver(request).solve()
 
     assert response.status == "SUCCESS"
+    validate_or_fail(request, response)
     for route in response.routes:
         # With fallback, duration equals distance (same matrix used for both)
         assert route.total_duration_s == route.total_distance_m

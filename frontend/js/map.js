@@ -7,9 +7,12 @@ import { MAPS_JS_API_KEY } from "./config.js";
 const VEHICLE_COLORS = ["#2563eb", "#c4653a", "#2e7d32", "#9333ea", "#d97706"];
 const DEPOT_COLOR = "#1a1a18";
 
+const BEST_KNOWN_COLOR = "#888";
+
 let map = null;
 let markers = [];
-let routeObjects = [];   // { obj: Polyline, vehicleIndex, color }
+let routeObjects = [];        // { obj: Polyline, vehicleIndex, color }
+let bestKnownObjects = [];    // Polylines for best-known routes
 let directionsService = null;
 
 // ── Init ────────────────────────────────────────────────────────────
@@ -203,6 +206,32 @@ export function clearRoutes() {
   routeObjects.forEach((ro) => ro.obj.setMap(null));
   routeObjects = [];
   directionsService = null;
+}
+
+// ── Best-known routes (dashed overlay) ──────────────────────────────
+
+export function drawBestKnownRoute(stops, vehicleIndex) {
+  const path = stops.map((s) => ({ lat: s.lat, lng: s.lng }));
+  const polyline = new google.maps.Polyline({
+    path,
+    geodesic: true,
+    strokeColor: BEST_KNOWN_COLOR,
+    strokeOpacity: 0,
+    strokeWeight: 3,
+    icons: [{
+      icon: { path: "M 0,-1 0,1", strokeOpacity: 0.5, strokeWeight: 3, scale: 3 },
+      offset: "0",
+      repeat: "16px",
+    }],
+    map,
+    zIndex: 0,
+  });
+  bestKnownObjects.push(polyline);
+}
+
+export function clearBestKnownRoutes() {
+  bestKnownObjects.forEach((p) => p.setMap(null));
+  bestKnownObjects = [];
 }
 
 // ── Fit bounds ──────────────────────────────────────────────────────

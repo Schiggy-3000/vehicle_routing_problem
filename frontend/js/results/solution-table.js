@@ -3,7 +3,7 @@ import { getVehicleColor, highlightRoute, unhighlightAllRoutes } from "../map.js
 /**
  * Renders the route breakdown table in the results panel.
  */
-export function renderTable(solutionResponse, problemType) {
+export function renderTable(solutionResponse, problemType, instanceExpected = null) {
   const panel   = document.getElementById("results-panel");
   const content = document.getElementById("results-content");
 
@@ -47,11 +47,35 @@ export function renderTable(solutionResponse, problemType) {
        </div>`
     : "";
 
-  const obj = solutionResponse.objective_value != null
-    ? `<div class="results-footer">Objective: ${solutionResponse.objective_value.toLocaleString()} · Solved in ${solutionResponse.solver_wall_time_ms} ms</div>`
+  let footerParts = [];
+  if (solutionResponse.objective_value != null) {
+    footerParts.push(`Objective: ${solutionResponse.objective_value.toLocaleString()}`);
+  }
+  if (solutionResponse.solver_wall_time_ms != null) {
+    footerParts.push(`Solved in ${solutionResponse.solver_wall_time_ms} ms`);
+  }
+
+  // Best-known comparison
+  let bestKnownNote = "";
+  if (instanceExpected?.best_known_objective != null && solutionResponse.status === "SUCCESS") {
+    const totalDist = solutionResponse.routes.reduce((sum, r) => sum + r.total_distance_m, 0);
+    const bk = instanceExpected.best_known_objective;
+    const ratio = (totalDist / bk).toFixed(2);
+    bestKnownNote = `<div class="best-known-note">Best known: ${bk.toLocaleString()} · Solver: ${totalDist.toLocaleString()} (${ratio}x)</div>`;
+  }
+
+  const obj = footerParts.length
+    ? `<div class="results-footer">${footerParts.join(" · ")}</div>`
     : "";
 
-  content.innerHTML = routeRows + dropped + obj;
+  const legend = bestKnownNote
+    ? `<div class="route-legend">
+        <span class="route-legend-item"><span class="legend-line solid"></span> Solver</span>
+        <span class="route-legend-item"><span class="legend-line dashed"></span> Best known</span>
+      </div>`
+    : "";
+
+  content.innerHTML = routeRows + dropped + obj + bestKnownNote + legend;
   panel.classList.add("visible");
 
   // Cross-highlighting: hover route card → highlight map route

@@ -1,4 +1,4 @@
-from tests.fixtures import MEMPHIS_LOCATIONS, make_request
+from tests.fixtures import MEMPHIS_LOCATIONS, make_request, validate_or_fail
 from app.models.request_models import Location, Vehicle
 from app.solvers.cvrp_solver import CvrpSolver
 
@@ -17,6 +17,7 @@ def test_cvrp_respects_capacity():
     response = CvrpSolver(request).solve()
 
     assert response.status == "SUCCESS"
+    validate_or_fail(request, response)
 
     # No vehicle should exceed capacity 10
     for route in response.routes:

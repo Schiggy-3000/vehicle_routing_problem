@@ -1,4 +1,4 @@
-from tests.fixtures import MEMPHIS_DISTANCE_MATRIX, MEMPHIS_DURATION_MATRIX
+from tests.fixtures import MEMPHIS_DISTANCE_MATRIX, MEMPHIS_DURATION_MATRIX, validate_or_fail
 from app.models.request_models import Location, SolveRequest, Vehicle
 from app.solvers.vrptw_solver import VrptwSolver
 
@@ -27,6 +27,7 @@ def test_vrptw_respects_time_windows():
     response = VrptwSolver(request).solve()
 
     assert response.status == "SUCCESS"
+    validate_or_fail(request, response)
 
     for route in response.routes:
         for stop in route.stops:

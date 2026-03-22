@@ -1,4 +1,4 @@
-from tests.fixtures import make_request
+from tests.fixtures import make_request, validate_or_fail
 from app.solvers.vrp_solver import VrpSolver
 
 
@@ -7,6 +7,7 @@ def test_vrp_finds_solution():
     response = VrpSolver(request).solve()
 
     assert response.status == "SUCCESS"
+    validate_or_fail(request, response)
     assert response.objective_value is not None and response.objective_value > 0
 
     # All non-depot locations must appear across all routes
@@ -32,3 +33,4 @@ def test_vrp_objective_matches_notebook():
     request = make_request("VRP")
     response = VrpSolver(request).solve()
     assert response.objective_value == 6_406_522
+    validate_or_fail(request, response)

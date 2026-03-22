@@ -1,0 +1,28 @@
+{
+  "name": "Swiss Demo",
+  "description": "4 real locations in Switzerland — uses Google API for road distances",
+  "problem_type": "VRP",
+  "category": "demo",
+  "locations": [
+    { "id": "loc_0", "label": "Galliker LC 3 (Depot)", "address": "Galliker LC 3, Industriepark, 6252 Dagmersellen", "lat": 47.2080684, "lng": 7.9770576, "demand": 0, "time_window": [0, 86400] },
+    { "id": "loc_1", "label": "Ottos Sport Outlet", "address": "Infanteriestrasse 12, 6210 Sursee", "lat": 47.1807265, "lng": 8.1049023, "demand": 5, "time_window": [0, 86400] },
+    { "id": "loc_2", "label": "Adidas Outlet Cham", "address": "Brunnmatt 14, 6330 Cham", "lat": 47.192036, "lng": 8.448365, "demand": 5, "time_window": [0, 86400] },
+    { "id": "loc_3", "label": "Coop Aarau", "address": "Tellistrasse 67, 5004 Aarau", "lat": 47.3984877, "lng": 8.0586177, "demand": 5, "time_window": [0, 86400] }
+  ],
+  "vehicles": [
+    { "id": 0, "capacity": 0, "max_distance": 2000000, "max_time": 57600 },
+    { "id": 1, "capacity": 0, "max_distance": 2000000, "max_time": 57600 }
+  ],
+  "pickup_delivery_pairs": [],
+  "optimization_objective": "distance",
+  "distance_matrix": [],
+  "duration_matrix": [],
+  "expected": {
+    "status": "SUCCESS",
+    "objective_value": null,
+    "num_routes": null,
+    "best_known_objective": null,
+    "quality_threshold": null
+  },
+  "best_known_routes": []
+}

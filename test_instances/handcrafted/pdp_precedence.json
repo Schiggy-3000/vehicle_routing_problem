@@ -1,0 +1,43 @@
+{
+  "name": "PDP Precedence",
+  "description": "2 pickup-delivery pairs — verifies pickup always visited before delivery on same vehicle",
+  "problem_type": "PDP",
+  "category": "handcrafted",
+  "locations": [
+    { "id": "loc_0", "label": "Depot", "lat": 47.25, "lng": 8.00, "demand": 0, "time_window": [0, 86400] },
+    { "id": "loc_1", "label": "Pickup 1", "lat": 47.28, "lng": 7.95, "demand": 0, "time_window": [0, 86400] },
+    { "id": "loc_2", "label": "Delivery 1", "lat": 47.28, "lng": 8.05, "demand": 0, "time_window": [0, 86400] },
+    { "id": "loc_3", "label": "Pickup 2", "lat": 47.22, "lng": 7.95, "demand": 0, "time_window": [0, 86400] },
+    { "id": "loc_4", "label": "Delivery 2", "lat": 47.22, "lng": 8.05, "demand": 0, "time_window": [0, 86400] }
+  ],
+  "vehicles": [
+    { "id": 0, "capacity": 0, "max_distance": 10000000, "max_time": 360000 }
+  ],
+  "pickup_delivery_pairs": [
+    { "pickup_id": "loc_1", "delivery_id": "loc_2" },
+    { "pickup_id": "loc_3", "delivery_id": "loc_4" }
+  ],
+  "optimization_objective": "distance",
+  "distance_matrix": [
+    [0, 10, 20, 15, 25],
+    [10, 0, 15, 20, 30],
+    [20, 15, 0, 25, 10],
+    [15, 20, 25, 0, 15],
+    [25, 30, 10, 15, 0]
+  ],
+  "duration_matrix": [
+    [0, 10, 20, 15, 25],
+    [10, 0, 15, 20, 30],
+    [20, 15, 0, 25, 10],
+    [15, 20, 25, 0, 15],
+    [25, 30, 10, 15, 0]
+  ],
+  "expected": {
+    "status": "SUCCESS",
+    "objective_value": null,
+    "num_routes": 1,
+    "best_known_objective": null,
+    "quality_threshold": null
+  },
+  "best_known_routes": []
+}

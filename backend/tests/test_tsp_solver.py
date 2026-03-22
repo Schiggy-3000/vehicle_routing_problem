@@ -1,4 +1,4 @@
-from tests.fixtures import make_request
+from tests.fixtures import make_request, validate_or_fail
 from app.solvers.tsp_solver import TspSolver
 
 
@@ -7,6 +7,7 @@ def test_tsp_finds_solution():
     response = TspSolver(request).solve()
 
     assert response.status == "SUCCESS"
+    validate_or_fail(request, response)
     assert response.objective_value is not None and response.objective_value > 0
     assert len(response.routes) == 1, "TSP must use exactly 1 vehicle"
 

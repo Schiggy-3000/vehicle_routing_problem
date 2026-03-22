@@ -52,11 +52,27 @@
       </div>
     </div>
 
-    <!-- Load Swiss demo -->
+    <!-- Load instance -->
     <div class="sidebar-section">
-      <button class="btn btn-outline" id="btn-demo" style="width:100%;">
-        Load Demo Data
-      </button>
+      <select id="instance-select" class="instance-select">
+        <option value="" disabled selected>Load Instance…</option>
+        <optgroup label="Demo">
+          <option value="demo/swiss_demo">Swiss Demo — VRP (4 locations)</option>
+        </optgroup>
+        <optgroup label="Benchmarks">
+          <option value="benchmarks/burma14">burma14 — TSP (14 cities)</option>
+          <option value="benchmarks/A-n32-k5">A-n32-k5 — CVRP (32 nodes)</option>
+          <option value="benchmarks/C101_25">C101 — VRPTW (26 nodes)</option>
+          <option value="benchmarks/lc101_small">lc101 — PDP (~20 nodes)</option>
+        </optgroup>
+        <optgroup label="Hand-Crafted">
+          <option value="handcrafted/tsp_triangle">TSP Triangle (3 cities)</option>
+          <option value="handcrafted/cvrp_forced_split">CVRP Forced Split (4 nodes)</option>
+          <option value="handcrafted/vrptw_forced_order">VRPTW Forced Order (4 nodes)</option>
+          <option value="handcrafted/pdp_precedence">PDP Precedence (5 nodes)</option>
+          <option value="handcrafted/vrp_max_dist_split">VRP Max-Dist Split (5 nodes)</option>
+        </optgroup>
+      </select>
     </div>
 
     <!-- Actions -->

@@ -12,8 +12,44 @@ Locations:
 Distance matrix values are in meters (driving distance).
 Duration matrix values are in seconds (estimated from distance @ 50 km/h).
 """
+import json
+from pathlib import Path
 
 from app.models.request_models import Location, PickupDeliveryPair, SolveRequest, Vehicle
+from app.models.response_models import SolveResponse
+from tests.solution_validator import validate_solution
+
+# Root of the test_instances directory
+INSTANCES_DIR = Path(__file__).resolve().parent.parent.parent / "test_instances"
+
+
+def validate_or_fail(request: SolveRequest, response: SolveResponse) -> None:
+    """Run the solution validator. Fails the test if any violations found."""
+    violations = validate_solution(request, response)
+    assert violations == [], "Solution violations:\n" + "\n".join(violations)
+
+
+def load_instance(relative_path: str) -> dict:
+    """Load a JSON test instance file relative to test_instances/."""
+    path = INSTANCES_DIR / f"{relative_path}.json"
+    with open(path) as f:
+        return json.load(f)
+
+
+def instance_to_request(data: dict) -> SolveRequest:
+    """Convert a JSON instance dict to a SolveRequest."""
+    return SolveRequest(
+        problem_type=data["problem_type"],
+        depot_index=0,
+        locations=[Location(**loc) for loc in data["locations"]],
+        vehicles=[Vehicle(**v) for v in data["vehicles"]],
+        pickup_delivery_pairs=[
+            PickupDeliveryPair(**p) for p in data.get("pickup_delivery_pairs", [])
+        ],
+        optimization_objective=data.get("optimization_objective", "distance"),
+        distance_matrix=data.get("distance_matrix", []),
+        duration_matrix=data.get("duration_matrix", []),
+    )
 
 # 4×4 driving distance matrix from the notebook (meters)
 MEMPHIS_DISTANCE_MATRIX = [

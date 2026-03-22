@@ -1,0 +1,43 @@
+{
+  "name": "VRPTW Forced Order",
+  "description": "3 customers with non-overlapping time windows [0,10], [20,30], [40,50] — forces visit order 1→2→3",
+  "problem_type": "VRPTW",
+  "category": "handcrafted",
+  "locations": [
+    { "id": "loc_0", "label": "Depot", "lat": 47.25, "lng": 8.00, "demand": 0, "time_window": [0, 86400] },
+    { "id": "loc_1", "label": "Stop A (early)", "lat": 47.28, "lng": 7.97, "demand": 0, "time_window": [0, 10] },
+    { "id": "loc_2", "label": "Stop B (mid)", "lat": 47.28, "lng": 8.03, "demand": 0, "time_window": [20, 30] },
+    { "id": "loc_3", "label": "Stop C (late)", "lat": 47.22, "lng": 8.00, "demand": 0, "time_window": [40, 50] }
+  ],
+  "vehicles": [
+    { "id": 0, "capacity": 0, "max_distance": 10000000, "max_time": 86400 }
+  ],
+  "pickup_delivery_pairs": [],
+  "optimization_objective": "distance",
+  "distance_matrix": [
+    [0, 5, 5, 5],
+    [5, 0, 5, 5],
+    [5, 5, 0, 5],
+    [5, 5, 5, 0]
+  ],
+  "duration_matrix": [
+    [0, 5, 5, 5],
+    [5, 0, 5, 5],
+    [5, 5, 0, 5],
+    [5, 5, 5, 0]
+  ],
+  "expected": {
+    "status": "SUCCESS",
+    "objective_value": 20,
+    "num_routes": 1,
+    "best_known_objective": 20,
+    "quality_threshold": null
+  },
+  "best_known_routes": [
+    {
+      "vehicle_id": 0,
+      "stop_ids": ["loc_0", "loc_1", "loc_2", "loc_3", "loc_0"],
+      "total_distance_m": 20
+    }
+  ]
+}
