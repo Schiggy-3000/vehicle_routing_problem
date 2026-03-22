@@ -96,9 +96,9 @@ async function init() {
       state.solution = response;
 
       if (response.status === "SUCCESS") {
-        // Fit map BEFORE rendering routes (await idle event to avoid paint race)
-        await fitBoundsToLocations(state.locations);
         await renderRoutes(response);
+        // Fit map AFTER rendering routes (routes are now plain Polylines, no viewport override)
+        await fitBoundsToLocations(state.locations);
         renderTable(response, state.problemType);
         showToast("Solution found!", "success");
       } else {

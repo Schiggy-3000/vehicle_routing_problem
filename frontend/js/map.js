@@ -9,7 +9,7 @@ const DEPOT_COLOR = "#1a1a18";
 
 let map = null;
 let markers = [];
-let routeObjects = [];   // { type: 'renderer'|'polyline', obj, vehicleIndex, color, hoverOverlay? }
+let routeObjects = [];   // { obj: Polyline, vehicleIndex, color }
 let directionsService = null;
 
 // ── Init ────────────────────────────────────────────────────────────
@@ -131,29 +131,20 @@ export async function drawRoute(stops, vehicleIndex) {
       travelMode: google.maps.TravelMode.DRIVING,
     });
 
-    const renderer = new google.maps.DirectionsRenderer({
+    // Extract road-following path and draw as a regular Polyline
+    // (DirectionsRenderer unreliably updates styles and overrides fitBounds)
+    const path = result.routes[0].overview_path;
+    const polyline = new google.maps.Polyline({
+      path,
+      geodesic: true,
+      strokeColor: color,
+      strokeOpacity: 0.85,
+      strokeWeight: 4,
       map,
-      directions: result,
-      suppressMarkers: true,
-      polylineOptions: {
-        strokeColor: color,
-        strokeWeight: 4,
-        strokeOpacity: 0.85,
-      },
     });
 
-    // Create invisible overlay polyline for hover detection on DirectionsRenderer
-    const overviewPath = result.routes[0].overview_path;
-    const hoverOverlay = new google.maps.Polyline({
-      path: overviewPath,
-      strokeOpacity: 0.001,
-      strokeWeight: 20,
-      map,
-      zIndex: 5,
-    });
-
-    const routeObj = { type: "renderer", obj: renderer, vehicleIndex, color, hoverOverlay };
-    _addRouteHoverListeners(hoverOverlay, vehicleIndex);
+    const routeObj = { obj: polyline, vehicleIndex, color };
+    _addRouteHoverListeners(polyline, vehicleIndex);
     routeObjects.push(routeObj);
   } catch {
     // Fallback to straight lines if Directions API fails
@@ -172,7 +163,7 @@ function _drawStraightLine(stops, color, vehicleIndex) {
     map,
   });
 
-  const routeObj = { type: "polyline", obj: polyline, vehicleIndex, color };
+  const routeObj = { obj: polyline, vehicleIndex, color };
   _addRouteHoverListeners(polyline, vehicleIndex);
   routeObjects.push(routeObj);
 }
@@ -205,24 +196,11 @@ export function unhighlightAllRoutes() {
 }
 
 function _setRouteStyle(routeObj, { strokeWeight, strokeOpacity }) {
-  if (routeObj.type === "polyline") {
-    routeObj.obj.setOptions({ strokeWeight, strokeOpacity });
-  } else if (routeObj.type === "renderer") {
-    routeObj.obj.setOptions({
-      polylineOptions: {
-        strokeColor: routeObj.color,
-        strokeWeight,
-        strokeOpacity,
-      },
-    });
-  }
+  routeObj.obj.setOptions({ strokeWeight, strokeOpacity });
 }
 
 export function clearRoutes() {
-  routeObjects.forEach((ro) => {
-    ro.obj.setMap(null);
-    if (ro.hoverOverlay) ro.hoverOverlay.setMap(null);
-  });
+  routeObjects.forEach((ro) => ro.obj.setMap(null));
   routeObjects = [];
   directionsService = null;
 }
