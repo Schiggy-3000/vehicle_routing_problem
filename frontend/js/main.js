@@ -89,6 +89,7 @@ async function init() {
     if (state.locations.length < 2) return;
     showLoader("Computing distances & solving…");
     clearRoutes();
+    clearMapGlow();
     document.getElementById("results-panel").classList.remove("visible");
     try {
       const payload = buildPayload();
@@ -100,12 +101,15 @@ async function init() {
         // Fit map AFTER rendering routes (routes are now plain Polylines, no viewport override)
         await fitBoundsToLocations(state.locations);
         renderTable(response, state.problemType);
+        flashMapGlow("success");
         showToast("Solution found!", "success");
       } else {
         renderTable(response, state.problemType);
+        flashMapGlow("error");
         showToast("No solution found. Try relaxing constraints or adding more vehicles.", "error", 7000);
       }
     } catch (err) {
+      flashMapGlow("error");
       showToast(`Error: ${err.message}`, "error", 7000);
     } finally {
       hideLoader();
@@ -176,6 +180,18 @@ function showLoader(msg = "Working…") {
 
 function hideLoader() {
   document.getElementById("loader").classList.remove("visible");
+}
+
+function flashMapGlow(type) {
+  const mc = document.getElementById("map-container");
+  mc.classList.remove("glow-success", "glow-error");
+  mc.classList.add(`glow-${type}`);
+  // Auto-remove after 4 seconds
+  setTimeout(() => mc.classList.remove(`glow-${type}`), 4000);
+}
+
+function clearMapGlow() {
+  document.getElementById("map-container").classList.remove("glow-success", "glow-error");
 }
 
 // ── Start ─────────────────────────────────────────────────────────────
