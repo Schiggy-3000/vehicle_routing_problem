@@ -1,4 +1,4 @@
-from tests.fixtures import MEMPHIS_LOCATIONS, make_request, validate_or_fail
+from tests.backend.fixtures import MEMPHIS_LOCATIONS, make_request, validate_or_fail
 from app.models.request_models import Location, Vehicle
 from app.solvers.cvrp_solver import CvrpSolver
 

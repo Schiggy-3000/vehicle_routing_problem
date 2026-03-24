@@ -1,4 +1,4 @@
-from tests.fixtures import MEMPHIS_DISTANCE_MATRIX, MEMPHIS_DURATION_MATRIX, validate_or_fail
+from tests.backend.fixtures import MEMPHIS_DISTANCE_MATRIX, MEMPHIS_DURATION_MATRIX, validate_or_fail
 from app.models.request_models import Location, SolveRequest, Vehicle
 from app.solvers.vrptw_solver import VrptwSolver
 

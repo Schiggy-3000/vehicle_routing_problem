@@ -1,4 +1,4 @@
-from tests.fixtures import make_request, validate_or_fail
+from tests.backend.fixtures import make_request, validate_or_fail
 from app.solvers.vrp_solver import VrpSolver
 
 

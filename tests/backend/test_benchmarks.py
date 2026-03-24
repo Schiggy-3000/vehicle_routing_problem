@@ -4,7 +4,7 @@ Solves published VRP benchmark instances, validates constraints, and checks
 that objective values are within a reasonable range of best-known solutions.
 """
 import pytest
-from tests.fixtures import load_instance, instance_to_request, validate_or_fail
+from tests.backend.fixtures import load_instance, instance_to_request, validate_or_fail
 from app.services.solver_service import solve
 
 

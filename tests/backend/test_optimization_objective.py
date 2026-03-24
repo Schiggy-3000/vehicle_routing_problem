@@ -7,7 +7,7 @@ from app.solvers.tsp_solver import TspSolver
 from app.solvers.vrp_solver import VrpSolver
 from app.solvers.cvrp_solver import CvrpSolver
 from app.solvers.vrptw_solver import VrptwSolver
-from tests.fixtures import (
+from tests.backend.fixtures import (
     MEMPHIS_DISTANCE_MATRIX,
     MEMPHIS_DURATION_MATRIX,
     make_request,
@@ -61,7 +61,7 @@ def test_tsp_minimize_time_returns_success():
 
 def test_cvrp_minimize_time_returns_success():
     from app.models.request_models import Location
-    from tests.fixtures import MEMPHIS_LOCATIONS
+    from tests.backend.fixtures import MEMPHIS_LOCATIONS
 
     locs = [
         MEMPHIS_LOCATIONS[0],

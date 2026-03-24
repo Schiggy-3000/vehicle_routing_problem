@@ -277,3 +277,7 @@ function _pinIcon(fillColor, scale = 1.5) {
 export function getVehicleColor(vehicleIndex) {
   return VEHICLE_COLORS[vehicleIndex % VEHICLE_COLORS.length];
 }
+
+// ── Test hooks (used by Playwright E2E tests) ────────────────────────
+export function getRouteCount() { return routeObjects.length; }
+export function getBestKnownCount() { return bestKnownObjects.length; }

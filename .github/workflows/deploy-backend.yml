@@ -3,7 +3,7 @@ name: Deploy Backend to Cloud Run
 on:
   push:
     branches: [master]
-    paths: ["backend/**", ".github/workflows/deploy-backend.yml"]
+    paths: ["backend/**", "tests/backend/**", ".github/workflows/deploy-backend.yml"]
   workflow_dispatch:
 
 env:
@@ -32,10 +32,9 @@ jobs:
 
       - name: Run backend tests
         run: |
-          cd backend
-          pip install -r requirements.txt
+          pip install -r backend/requirements.txt
           pip install pytest
-          python -m pytest tests/ -v
+          python -m pytest tests/backend/ -v
 
       - name: Deploy to Cloud Run from source
         run: |

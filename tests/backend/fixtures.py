@@ -17,7 +17,7 @@ from pathlib import Path
 
 from app.models.request_models import Location, PickupDeliveryPair, SolveRequest, Vehicle
 from app.models.response_models import SolveResponse
-from tests.solution_validator import validate_solution
+from tests.backend.solution_validator import validate_solution
 
 # Root of the test_instances directory
 INSTANCES_DIR = Path(__file__).resolve().parent.parent.parent / "test_instances"

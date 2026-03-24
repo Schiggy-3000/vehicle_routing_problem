@@ -2,7 +2,7 @@
  * Application controller.
  * Owns global state and wires all UI events to the correct modules.
  */
-import { initMap, clearMarkers, addMarker, clearRoutes, clearBestKnownRoutes, drawBestKnownRoute, fitBoundsToLocations } from "./map.js";
+import { initMap, clearMarkers, addMarker, clearRoutes, clearBestKnownRoutes, drawBestKnownRoute, fitBoundsToLocations, getRouteCount, getBestKnownCount } from "./map.js";
 import { addLocationFromMapClick, renderLocationList, resetLocations, setLocationCounter, updateButtonStates } from "./forms/location-form.js";
 import { rebuildForm } from "./forms/form-builder.js";
 import { solve } from "./api.js";
@@ -143,6 +143,11 @@ async function init() {
     setStatus("");
     updateButtonStates();
   });
+
+  // Expose test hooks for Playwright E2E tests
+  window.__vrpState = state;
+  window.__vrpGetRouteCount = getRouteCount;
+  window.__vrpGetBestKnownCount = getBestKnownCount;
 }
 
 // ── Helpers ──────────────────────────────────────────────────────────
