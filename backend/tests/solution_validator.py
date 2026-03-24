@@ -170,7 +170,7 @@ def _check_vehicle_limits(
     violations: List[str],
 ) -> None:
     for i, route in enumerate(response.routes):
-        vehicle = request.vehicles[i] if i < len(request.vehicles) else request.vehicles[-1]
+        vehicle = request.vehicles[route.vehicle_id]
 
         # Recompute distance from matrix if available
         if request.distance_matrix:
@@ -216,7 +216,7 @@ def _check_capacity(
 ) -> None:
     depot_id = request.locations[request.depot_index].id
     for i, route in enumerate(response.routes):
-        vehicle = request.vehicles[i] if i < len(request.vehicles) else request.vehicles[-1]
+        vehicle = request.vehicles[route.vehicle_id]
         if vehicle.capacity == 0:
             continue  # unlimited
         load = 0

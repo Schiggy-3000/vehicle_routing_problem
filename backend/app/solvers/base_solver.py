@@ -173,11 +173,13 @@ class BaseSolver(ABC):
             # Add final depot stop
             node = self.manager.IndexToNode(index)
             loc = self.request.locations[node]
+            arrival_time = self._get_arrival_time(solution, index)
             stops.append(RouteStop(
                 location_id=loc.id,
                 label=loc.label,
                 lat=loc.lat,
                 lng=loc.lng,
+                arrival_time=arrival_time,
                 cumulative_distance=route_distance,
             ))
 

@@ -11,6 +11,7 @@ const BEST_KNOWN_COLOR = "#888";
 
 let map = null;
 let markers = [];
+let markerColors = [];        // parallel array: current fill color per marker
 let routeObjects = [];        // { obj: Polyline, vehicleIndex, color }
 let bestKnownObjects = [];    // Polylines for best-known routes
 let directionsService = null;
@@ -80,24 +81,31 @@ export function addMarker({ lat, lng, label, isDepot = false }) {
   });
 
   markers.push(marker);
+  markerColors.push(color);
   return marker;
 }
 
 export function clearMarkers() {
   markers.forEach((m) => m.setMap(null));
   markers = [];
+  markerColors = [];
+}
+
+export function setMarkerColor(index, color) {
+  if (!markers[index]) return;
+  markerColors[index] = color;
+  markers[index].setIcon(_pinIcon(color));
 }
 
 export function highlightMarker(index) {
   if (!markers[index]) return;
-  markers[index].setIcon(_pinIcon(markers[index].getIcon().fillColor, 2.0));
+  markers[index].setIcon(_pinIcon(markerColors[index], 2.0));
   markers[index].setZIndex(999);
 }
 
 export function unhighlightMarker(index) {
   if (!markers[index]) return;
-  const isDepot = index === 0;
-  markers[index].setIcon(_pinIcon(isDepot ? DEPOT_COLOR : "#2563eb"));
+  markers[index].setIcon(_pinIcon(markerColors[index]));
   markers[index].setZIndex(undefined);
 }
 
