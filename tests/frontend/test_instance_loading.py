@@ -8,18 +8,17 @@ def test_dropdown_lists_all_instances(loaded_page):
     page = loaded_page
 
     optgroups = page.locator("#instance-select optgroup")
-    assert optgroups.count() == 3
+    assert optgroups.count() == 4
 
-    labels = [optgroups.nth(i).get_attribute("label") for i in range(3)]
-    assert labels == ["Demo", "Benchmarks", "Hand-Crafted"]
+    labels = [optgroups.nth(i).get_attribute("label") for i in range(4)]
+    assert labels == ["Demo", "Benchmarks", "Hand-Crafted", "TSPLIB"]
 
     options = page.locator("#instance-select option:not([disabled])")
-    assert options.count() == 10
+    assert options.count() == 13
 
     # Verify specific values exist
     values = [options.nth(i).get_attribute("value") for i in range(options.count())]
     assert "demo/swiss_demo" in values
-    assert "benchmarks/burma14" in values
     assert "benchmarks/A-n32-k5" in values
     assert "benchmarks/C101_25" in values
     assert "benchmarks/lc101_small" in values
@@ -28,6 +27,10 @@ def test_dropdown_lists_all_instances(loaded_page):
     assert "handcrafted/vrptw_forced_order" in values
     assert "handcrafted/pdp_precedence" in values
     assert "handcrafted/vrp_max_dist_split" in values
+    assert "TSPLIB/burma14" in values
+    assert "TSPLIB/ulysses16" in values
+    assert "TSPLIB/ulysses22" in values
+    assert "TSPLIB/gr96" in values
 
 
 def test_load_tsp_triangle_populates_state(loaded_page):

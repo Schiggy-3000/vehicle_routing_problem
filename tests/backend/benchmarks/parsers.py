@@ -108,13 +108,25 @@ def _geo_matrix(nodes):
     return matrix
 
 
-def convert_burma14():
-    """Download and convert burma14.tsp to JSON."""
-    url = "https://raw.githubusercontent.com/pdrozdowski/TSPLib.Net/master/TSPLIB95/tsp/burma14.tsp"
-    text = _download(url)
-    name, dim, raw_nodes = parse_tsplib(text)
+# ── Generic TSPLIB GEO converter ──────────────────────────────────────
 
-    # burma14 uses real GEO coordinates (lat/lng) — use directly, no rescaling
+TSPLIB_REPO = "https://raw.githubusercontent.com/mastqe/tsplib/refs/heads/master"
+TSPLIB_DIR = Path(__file__).resolve().parent.parent.parent.parent / "sample_datasets" / "TSPLIB"
+
+TSPLIB_INSTANCES = {
+    "burma14": 3323,
+    "ulysses16": 6859,
+    "ulysses22": 7013,
+    "gr96": 55209,
+}
+
+
+def convert_tsplib_instance(name, best_known):
+    """Download and convert a TSPLIB GEO instance to JSON."""
+    url = f"{TSPLIB_REPO}/{name}.tsp"
+    text = _download(url)
+    _, dim, raw_nodes = parse_tsplib(text)
+
     dist_matrix = _geo_matrix(raw_nodes)
     coords = [(round(x, 6), round(y, 6)) for x, y in raw_nodes]
 
@@ -125,18 +137,13 @@ def convert_burma14():
             "lat": lat, "lng": lng, "demand": 0, "time_window": [0, 86400]
         })
 
-    # Best known optimal tour for burma14: 3323
-    # Optimal tour: 0-1-13-2-3-4-5-6-12-7-10-8-9-11-0
-    optimal_tour = [0, 1, 13, 2, 3, 4, 5, 6, 12, 7, 10, 8, 9, 11, 0]
-    optimal_dist = sum(dist_matrix[optimal_tour[i]][optimal_tour[i+1]] for i in range(len(optimal_tour)-1))
-
     data = {
-        "name": "burma14 (TSPLIB)",
-        "description": f"14 cities in Burma — optimal tour = {optimal_dist} (published: 3323)",
+        "name": f"{name} (TSPLIB)",
+        "description": f"{dim} cities — best known = {best_known}",
         "problem_type": "TSP",
-        "category": "benchmark",
+        "category": "TSPLIB",
         "locations": locations,
-        "vehicles": [{"id": 0, "capacity": 0, "max_distance": 100000, "max_time": 360000}],
+        "vehicles": [{"id": 0, "capacity": 0, "max_distance": 1000000, "max_time": 360000}],
         "pickup_delivery_pairs": [],
         "optimization_objective": "distance",
         "distance_matrix": dist_matrix,
@@ -145,20 +152,23 @@ def convert_burma14():
             "status": "SUCCESS",
             "objective_value": None,
             "num_routes": 1,
-            "best_known_objective": 3323,
+            "best_known_objective": best_known,
             "quality_threshold": 5.0
         },
-        "best_known_routes": [{
-            "vehicle_id": 0,
-            "stop_ids": [f"loc_{i}" for i in optimal_tour],
-            "total_distance_m": optimal_dist
-        }]
+        "best_known_routes": []
     }
 
-    out = INSTANCES_DIR / "burma14.json"
+    out = TSPLIB_DIR / f"{name}.json"
     with open(out, "w") as f:
         json.dump(data, f, indent=2)
     print(f"  Written: {out}")
+
+
+def convert_all_tsplib():
+    """Convert all TSPLIB GEO instances."""
+    os.makedirs(TSPLIB_DIR, exist_ok=True)
+    for name, best_known in TSPLIB_INSTANCES.items():
+        convert_tsplib_instance(name, best_known)
 
 
 # ── Augerat CVRP parser (A-n32-k5) ──────────────────────────────────
@@ -416,8 +426,9 @@ def convert_lc101_small():
 if __name__ == "__main__":
     os.makedirs(INSTANCES_DIR, exist_ok=True)
     print("Converting benchmark instances...")
-    convert_burma14()
     convert_A_n32_k5()
     convert_C101_25()
     convert_lc101_small()
+    print("Converting TSPLIB instances...")
+    convert_all_tsplib()
     print("Done!")

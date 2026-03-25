@@ -1,8 +1,8 @@
 {
   "name": "burma14 (TSPLIB)",
-  "description": "14 cities in Burma \u2014 optimal tour = 4402 (published: 3323)",
+  "description": "14 cities \u2014 best known = 3323",
   "problem_type": "TSP",
-  "category": "benchmark",
+  "category": "TSPLIB",
   "locations": [
     {
       "id": "loc_0",
@@ -163,7 +163,7 @@
     {
       "id": 0,
       "capacity": 0,
-      "max_distance": 100000,
+      "max_distance": 1000000,
       "max_time": 360000
     }
   ],
@@ -628,27 +628,5 @@
     "best_known_objective": 3323,
     "quality_threshold": 5.0
   },
-  "best_known_routes": [
-    {
-      "vehicle_id": 0,
-      "stop_ids": [
-        "loc_0",
-        "loc_1",
-        "loc_13",
-        "loc_2",
-        "loc_3",
-        "loc_4",
-        "loc_5",
-        "loc_6",
-        "loc_12",
-        "loc_7",
-        "loc_10",
-        "loc_8",
-        "loc_9",
-        "loc_11",
-        "loc_0"
-      ],
-      "total_distance_m": 4402
-    }
-  ]
+  "best_known_routes": []
 }
