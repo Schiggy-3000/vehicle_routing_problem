@@ -1,11 +1,10 @@
 """
 Checks 3 & 5: Solve flow — routes rendered, objective comparison.
-Uses TSPLIB/burma14 (pre-computed matrices, smallest TSPLIB instance).
+Uses TSPLIB/burma14 (empty matrices — Google API computes road distances at solve time).
 """
-import re
 
 
-def _load_and_solve(page, instance="TSPLIB/burma14", timeout=30_000):
+def _load_and_solve(page, instance="TSPLIB/burma14", timeout=60_000):
     """Helper: load an instance and solve it."""
     page.select_option("#instance-select", instance)
     page.locator(".toast").wait_for(state="visible", timeout=10_000)
@@ -13,6 +12,7 @@ def _load_and_solve(page, instance="TSPLIB/burma14", timeout=30_000):
     page.locator("#btn-solve").click()
 
     # Wait for loader to disappear (solve complete)
+    # Longer timeout: backend computes distance matrix via Google API
     page.wait_for_function(
         "() => !document.getElementById('loader').classList.contains('visible')",
         timeout=timeout,
@@ -43,7 +43,7 @@ def test_solve_shows_routes(loaded_page):
 
 
 def test_results_show_comparison(loaded_page):
-    """Check 5: Results panel shows best-known objective comparison with ratio."""
+    """Check 5: Results panel shows best-known comparison with metric labels."""
     page = loaded_page
     _load_and_solve(page)
 
@@ -52,8 +52,13 @@ def test_results_show_comparison(loaded_page):
     assert note.count() >= 1
 
     note_text = note.inner_text()
-    # burma14 best-known is 3,323,000 m — displayed as "3,323,000" or "3323000"
+
+    # burma14 best-known is 3,323,000 m (geodesic)
     assert "3,323" in note_text or "3323" in note_text
 
-    # Ratio pattern present (e.g., "1.00x")
-    assert re.search(r"\d+\.\d+x", note_text), f"No ratio found in: {note_text}"
+    # Cross-metric labels shown (geodesic best-known vs road solver)
+    assert "geodesic" in note_text
+    assert "road" in note_text
+
+    # No ratio for cross-metric comparison
+    assert "not directly comparable" in note_text

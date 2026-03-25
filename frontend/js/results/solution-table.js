@@ -3,7 +3,7 @@ import { getVehicleColor, highlightRoute, unhighlightAllRoutes } from "../map.js
 /**
  * Renders the route breakdown table in the results panel.
  */
-export function renderTable(solutionResponse, problemType, instanceExpected = null) {
+export function renderTable(solutionResponse, problemType, instanceExpected = null, distanceMetric = null) {
   const panel   = document.getElementById("results-panel");
   const content = document.getElementById("results-content");
 
@@ -60,8 +60,19 @@ export function renderTable(solutionResponse, problemType, instanceExpected = nu
   if (instanceExpected?.best_known_objective != null && solutionResponse.status === "SUCCESS") {
     const totalDist = solutionResponse.routes.reduce((sum, r) => sum + r.total_distance_m, 0);
     const bk = instanceExpected.best_known_objective;
-    const ratio = (totalDist / bk).toFixed(2);
-    bestKnownNote = `<div class="best-known-note">Best known: ${bk.toLocaleString()} · Solver: ${totalDist.toLocaleString()} (${ratio}x)</div>`;
+    const bkMetric = instanceExpected.best_known_metric || null;
+    const solverMetric = distanceMetric || null;
+    const crossMetric = bkMetric && solverMetric && bkMetric !== solverMetric;
+
+    const bkLabel = bkMetric ? ` (${bkMetric})` : "";
+    const solverLabel = solverMetric ? ` (${solverMetric})` : "";
+
+    if (crossMetric) {
+      bestKnownNote = `<div class="best-known-note">Best known${bkLabel}: ${bk.toLocaleString()} · Solver${solverLabel}: ${totalDist.toLocaleString()}<br><small>Different distance metrics — ratio not directly comparable</small></div>`;
+    } else {
+      const ratio = (totalDist / bk).toFixed(2);
+      bestKnownNote = `<div class="best-known-note">Best known${bkLabel}: ${bk.toLocaleString()} · Solver${solverLabel}: ${totalDist.toLocaleString()} (${ratio}x)</div>`;
+    }
   }
 
   const obj = footerParts.length

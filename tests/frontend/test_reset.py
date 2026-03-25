@@ -37,6 +37,9 @@ def test_reset_clears_all_state(loaded_page):
     solution = page.evaluate("window.__vrpState.solution")
     assert solution is None
 
+    metric = page.evaluate("window.__vrpState.distanceMetric")
+    assert metric is None
+
     bkr = page.evaluate("window.__vrpState.bestKnownRoutes")
     assert bkr is None
 

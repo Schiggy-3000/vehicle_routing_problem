@@ -14,19 +14,17 @@ def test_dropdown_lists_all_instances(loaded_page):
     assert labels == ["Demo", "TSPLIB"]
 
     options = page.locator("#instance-select option:not([disabled])")
-    assert options.count() == 5
+    assert options.count() == 3
 
     # Verify specific values exist
     values = [options.nth(i).get_attribute("value") for i in range(options.count())]
     assert "demo/swiss_demo" in values
     assert "TSPLIB/burma14" in values
     assert "TSPLIB/ulysses16" in values
-    assert "TSPLIB/ulysses22" in values
-    assert "TSPLIB/gr96" in values
 
 
 def test_load_burma14_populates_state(loaded_page):
-    """Check 2: Selecting burma14 populates locations, vehicles, matrices, problem type."""
+    """Check 2: Selecting burma14 populates locations, vehicles, problem type."""
     page = loaded_page
 
     page.select_option("#instance-select", "TSPLIB/burma14")
@@ -40,12 +38,13 @@ def test_load_burma14_populates_state(loaded_page):
     # 14 locations in sidebar
     assert page.locator("#location-list .loc-item").count() == 14
 
-    # State populated correctly
-    matrix_len = page.evaluate("window.__vrpState.distanceMatrix.length")
-    assert matrix_len == 14
+    # Distance matrix is null (empty — will be computed by Google API at solve time)
+    matrix = page.evaluate("window.__vrpState.distanceMatrix")
+    assert matrix is None
 
-    bkr_len = page.evaluate("window.__vrpState.bestKnownRoutes.length")
-    assert bkr_len == 0  # TSPLIB instances have no best-known routes
+    # Distance metric stored
+    metric = page.evaluate("window.__vrpState.distanceMetric")
+    assert metric == "road"
 
     # Solve button is enabled
     assert page.locator("#btn-solve").is_enabled()

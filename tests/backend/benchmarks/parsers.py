@@ -3,7 +3,6 @@ One-time conversion scripts for TSPLIB GEO benchmark instances → shared JSON f
 Run: python -m tests.backend.benchmarks.parsers
 """
 import json
-import math
 import os
 import urllib.request
 from pathlib import Path
@@ -52,53 +51,26 @@ def _geo_to_decimal(val):
     return round(deg + 5.0 * minutes / 3.0, 6)
 
 
-def _geo_distance(lat1, lon1, lat2, lon2):
-    """TSPLIB GEO distance computation. Returns distance in meters."""
-    PI = 3.141592
-    rlat1 = PI * _geo_to_decimal(lat1) / 180.0
-    rlon1 = PI * _geo_to_decimal(lon1) / 180.0
-    rlat2 = PI * _geo_to_decimal(lat2) / 180.0
-    rlon2 = PI * _geo_to_decimal(lon2) / 180.0
-    RRR = 6378.388
-    q1 = math.cos(rlon1 - rlon2)
-    q2 = math.cos(rlat1 - rlat2)
-    q3 = math.cos(rlat1 + rlat2)
-    km = int(RRR * math.acos(0.5 * ((1.0 + q1) * q2 - (1.0 - q1) * q3)) + 1.0)
-    return km * 1000  # convert km → meters
-
-
-def _geo_matrix(nodes):
-    """Compute TSPLIB GEO distance matrix (values in meters)."""
-    n = len(nodes)
-    matrix = [[0] * n for _ in range(n)]
-    for i in range(n):
-        for j in range(n):
-            if i != j:
-                matrix[i][j] = _geo_distance(nodes[i][0], nodes[i][1], nodes[j][0], nodes[j][1])
-    return matrix
-
-
 # ── Generic TSPLIB GEO converter ──────────────────────────────────────
 
 TSPLIB_REPO = "https://raw.githubusercontent.com/mastqe/tsplib/refs/heads/master"
 TSPLIB_DIR = Path(__file__).resolve().parent.parent.parent.parent / "sample_datasets" / "TSPLIB"
 
-# Best-known objectives in meters (original TSPLIB values × 1000)
+# Best-known objectives (geodesic, in meters = original TSPLIB values × 1000)
 TSPLIB_INSTANCES = {
     "burma14": 3323000,
     "ulysses16": 6859000,
-    "ulysses22": 7013000,
-    "gr96": 55209000,
 }
 
 
 def convert_tsplib_instance(name, best_known):
-    """Download and convert a TSPLIB GEO instance to JSON."""
+    """Download and convert a TSPLIB GEO instance to JSON.
+    Distance matrix is left empty — backend computes road distances via Google API at solve time.
+    """
     url = f"{TSPLIB_REPO}/{name}.tsp"
     text = _download(url)
     _, dim, raw_nodes = parse_tsplib(text)
 
-    dist_matrix = _geo_matrix(raw_nodes)
     # Convert TSPLIB degree.minute format to decimal degrees for map display
     coords = [(_geo_to_decimal(x), _geo_to_decimal(y)) for x, y in raw_nodes]
 
@@ -111,20 +83,22 @@ def convert_tsplib_instance(name, best_known):
 
     data = {
         "name": f"{name} (TSPLIB)",
-        "description": f"{dim} cities — best known = {best_known} m",
+        "description": f"{dim} cities — best known (geodesic) = {best_known} m",
         "problem_type": "TSP",
         "category": "TSPLIB",
+        "distance_metric": "road",
         "locations": locations,
         "vehicles": [{"id": 0, "capacity": 0, "max_distance": 100000000, "max_time": 100000000}],
         "pickup_delivery_pairs": [],
         "optimization_objective": "distance",
-        "distance_matrix": dist_matrix,
+        "distance_matrix": [],
         "duration_matrix": [],
         "expected": {
             "status": "SUCCESS",
             "objective_value": None,
             "num_routes": 1,
             "best_known_objective": best_known,
+            "best_known_metric": "geodesic",
             "quality_threshold": 5.0
         },
         "best_known_routes": []

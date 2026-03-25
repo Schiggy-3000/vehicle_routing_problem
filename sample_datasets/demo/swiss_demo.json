@@ -3,6 +3,7 @@
   "description": "4 real locations in Switzerland — uses Google API for road distances",
   "problem_type": "VRP",
   "category": "demo",
+  "distance_metric": "road",
   "locations": [
     { "id": "loc_0", "label": "Galliker LC 3 (Depot)", "address": "Galliker LC 3, Industriepark, 6252 Dagmersellen", "lat": 47.2080684, "lng": 7.9770576, "demand": 0, "time_window": [0, 86400] },
     { "id": "loc_1", "label": "Ottos Sport Outlet", "address": "Infanteriestrasse 12, 6210 Sursee", "lat": 47.1807265, "lng": 8.1049023, "demand": 5, "time_window": [0, 86400] },

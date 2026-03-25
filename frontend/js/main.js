@@ -19,6 +19,7 @@ export const state = {
   optimizationObjective: "distance",
   distanceMatrix: null,
   durationMatrix: null,
+  distanceMetric: null,
   solution: null,
   bestKnownRoutes: null,
   instanceExpected: null,
@@ -108,11 +109,11 @@ async function init() {
 
         // Fit map AFTER rendering routes (routes are now plain Polylines, no viewport override)
         await fitBoundsToLocations(state.locations);
-        renderTable(response, state.problemType, state.instanceExpected);
+        renderTable(response, state.problemType, state.instanceExpected, state.distanceMetric);
         flashMapGlow("success");
         showToast("Solution found!", "success");
       } else {
-        renderTable(response, state.problemType, state.instanceExpected);
+        renderTable(response, state.problemType, state.instanceExpected, state.distanceMetric);
         flashMapGlow("error");
         showToast("No solution found. Try relaxing constraints or adding more vehicles.", "error", 7000);
       }
@@ -137,6 +138,7 @@ async function init() {
     resetLocations();
     state.pickupDeliveryPairs = [];
     state.solution = null;
+    state.distanceMetric = null;
     state.bestKnownRoutes = null;
     state.instanceExpected = null;
     state.optimizationObjective = "distance";
@@ -208,7 +210,8 @@ async function loadInstance(path) {
     const objRadio = document.querySelector(`input[name="objective"][value="${state.optimizationObjective}"]`);
     if (objRadio) objRadio.checked = true;
 
-    // Store best-known routes and expected values for comparison after solve
+    // Store distance metric and best-known data for comparison after solve
+    state.distanceMetric = data.distance_metric || null;
     state.bestKnownRoutes = data.best_known_routes?.length ? data.best_known_routes : null;
     state.instanceExpected = data.expected || null;
 
