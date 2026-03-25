@@ -40,6 +40,12 @@ Thumbs.db
 
 
 # =========================
+# Build artifacts
+# =========================
+frontend/sample_datasets/
+
+
+# =========================
 # Claude Code
 # =========================
 .claude/

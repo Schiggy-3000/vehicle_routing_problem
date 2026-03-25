@@ -19,8 +19,8 @@ from app.models.request_models import Location, PickupDeliveryPair, SolveRequest
 from app.models.response_models import SolveResponse
 from tests.backend.solution_validator import validate_solution
 
-# Root of the test_instances directory
-INSTANCES_DIR = Path(__file__).resolve().parent.parent.parent / "test_instances"
+# Root of the sample_datasets directory
+INSTANCES_DIR = Path(__file__).resolve().parent.parent.parent / "sample_datasets"
 
 
 def validate_or_fail(request: SolveRequest, response: SolveResponse) -> None:
@@ -30,7 +30,7 @@ def validate_or_fail(request: SolveRequest, response: SolveResponse) -> None:
 
 
 def load_instance(relative_path: str) -> dict:
-    """Load a JSON test instance file relative to test_instances/."""
+    """Load a JSON test instance file relative to sample_datasets/."""
     path = INSTANCES_DIR / f"{relative_path}.json"
     with open(path) as f:
         return json.load(f)

@@ -2,6 +2,7 @@
 Fixtures for frontend E2E tests using Playwright.
 Starts a local HTTP server and provides a loaded page with Google Maps ready.
 """
+import shutil
 import subprocess
 import sys
 import time
@@ -12,17 +13,25 @@ import urllib.request
 import urllib.error
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
+FRONTEND_DIR = PROJECT_ROOT / "frontend"
 PORT = 5500
 BASE_URL = f"http://127.0.0.1:{PORT}"
-PAGE_URL = f"{BASE_URL}/frontend/index.html"
+PAGE_URL = f"{BASE_URL}/index.html"
 
 
 @pytest.fixture(scope="session")
 def local_server():
-    """Start a local HTTP server serving the repo root on port 5500."""
+    """Copy sample_datasets into frontend/ and start a local HTTP server."""
+    # Mirror CI: copy sample_datasets into frontend/ so relative fetch paths work
+    datasets_src = PROJECT_ROOT / "sample_datasets"
+    datasets_dst = FRONTEND_DIR / "sample_datasets"
+    if datasets_dst.exists():
+        shutil.rmtree(datasets_dst)
+    shutil.copytree(datasets_src, datasets_dst)
+
     proc = subprocess.Popen(
         [sys.executable, "-m", "http.server", str(PORT), "--bind", "127.0.0.1"],
-        cwd=str(PROJECT_ROOT),
+        cwd=str(FRONTEND_DIR),
         stdout=subprocess.DEVNULL,
         stderr=subprocess.DEVNULL,
     )
@@ -36,12 +45,14 @@ def local_server():
             time.sleep(0.2)
     else:
         proc.terminate()
+        shutil.rmtree(datasets_dst, ignore_errors=True)
         pytest.fail("Local HTTP server did not start in time")
 
     yield BASE_URL
 
     proc.terminate()
     proc.wait(timeout=5)
+    shutil.rmtree(datasets_dst, ignore_errors=True)
 
 
 @pytest.fixture()

@@ -166,7 +166,7 @@ function buildPayload() {
 
 async function loadInstance(path) {
   try {
-    const resp = await fetch(`../test_instances/${path}.json`);
+    const resp = await fetch(`sample_datasets/${path}.json`);
     if (!resp.ok) throw new Error(`Failed to load instance: ${resp.status}`);
     const data = await resp.json();
 

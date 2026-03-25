@@ -8,7 +8,7 @@ import os
 import urllib.request
 from pathlib import Path
 
-INSTANCES_DIR = Path(__file__).resolve().parent.parent.parent.parent / "test_instances" / "benchmarks"
+INSTANCES_DIR = Path(__file__).resolve().parent.parent.parent.parent / "sample_datasets" / "benchmarks"
 
 # Geographic center for coordinate mapping (Switzerland)
 CENTER_LAT, CENTER_LNG = 47.25, 8.00
