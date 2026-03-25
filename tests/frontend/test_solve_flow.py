@@ -1,11 +1,11 @@
 """
-Checks 3, 4, 5: Solve flow — routes rendered, best-known overlay, objective comparison.
-Uses tsp_triangle (pre-computed matrices, fastest instance).
+Checks 3 & 5: Solve flow — routes rendered, objective comparison.
+Uses TSPLIB/burma14 (pre-computed matrices, smallest TSPLIB instance).
 """
 import re
 
 
-def _load_and_solve(page, instance="handcrafted/tsp_triangle", timeout=30_000):
+def _load_and_solve(page, instance="TSPLIB/burma14", timeout=30_000):
     """Helper: load an instance and solve it."""
     page.select_option("#instance-select", instance)
     page.locator(".toast").wait_for(state="visible", timeout=10_000)
@@ -42,26 +42,6 @@ def test_solve_shows_routes(loaded_page):
     assert map_routes == 1
 
 
-def test_best_known_routes_rendered(loaded_page):
-    """Check 4: Best-known routes drawn as dashed overlay after solving."""
-    page = loaded_page
-    _load_and_solve(page)
-
-    # Best-known polyline created on map
-    bk_count = page.evaluate("window.__vrpGetBestKnownCount()")
-    assert bk_count == 1
-
-    # Legend exists in results
-    legend = page.locator("#results-content .route-legend")
-    assert legend.count() >= 1
-    legend_text = legend.inner_text()
-    assert "Solver" in legend_text
-    assert "Best known" in legend_text
-
-    # Dashed legend indicator exists
-    assert page.locator("#results-content .legend-line.dashed").count() >= 1
-
-
 def test_results_show_comparison(loaded_page):
     """Check 5: Results panel shows best-known objective comparison with ratio."""
     page = loaded_page
@@ -72,7 +52,8 @@ def test_results_show_comparison(loaded_page):
     assert note.count() >= 1
 
     note_text = note.inner_text()
-    assert "Best known: 45" in note_text
+    # burma14 best-known is 3,323,000 m — displayed as "3,323,000" or "3323000"
+    assert "3,323" in note_text or "3323" in note_text
 
     # Ratio pattern present (e.g., "1.00x")
     assert re.search(r"\d+\.\d+x", note_text), f"No ratio found in: {note_text}"

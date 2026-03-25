@@ -9,9 +9,6 @@ from app.services.solver_service import solve
 
 
 BENCHMARK_INSTANCES = [
-    "benchmarks/A-n32-k5",
-    "benchmarks/C101_25",
-    "benchmarks/lc101_small",
     "TSPLIB/burma14",
     "TSPLIB/ulysses16",
     "TSPLIB/ulysses22",

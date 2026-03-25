@@ -144,7 +144,7 @@ def test_vrp_tight_max_time_drops_visits_or_no_solution():
 
 
 def test_tsp_max_time_from_vehicle_model():
-    """TSP solver sets max_time=360_000; verify it doesn't block normal solutions."""
+    """TSP solver sets generous max_time; verify it doesn't block normal solutions."""
     request = make_request("TSP")
     response = TspSolver(request).solve()
     assert response.status == "SUCCESS"

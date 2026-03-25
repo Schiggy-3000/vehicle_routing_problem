@@ -8,11 +8,11 @@ def test_reset_clears_all_state(loaded_page):
     page = loaded_page
 
     # Load an instance first
-    page.select_option("#instance-select", "handcrafted/tsp_triangle")
+    page.select_option("#instance-select", "TSPLIB/burma14")
     page.locator(".toast").wait_for(state="visible", timeout=10_000)
 
     # Verify it's loaded
-    assert page.locator("#location-list .loc-item").count() == 3
+    assert page.locator("#location-list .loc-item").count() == 14
 
     # Click reset
     page.locator("#btn-reset").click()
