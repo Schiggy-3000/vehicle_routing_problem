@@ -92,12 +92,10 @@ def _geo_to_decimal(val):
 def _geo_distance(lat1, lon1, lat2, lon2):
     """TSPLIB GEO distance computation."""
     PI = 3.141592
-    def to_geo(val):
-        deg = int(val)
-        return PI * (deg + 5.0 * (val - deg) / 3.0) / 180.0
-
-    rlat1, rlon1 = to_geo(lat1), to_geo(lon1)
-    rlat2, rlon2 = to_geo(lat2), to_geo(lon2)
+    rlat1 = PI * _geo_to_decimal(lat1) / 180.0
+    rlon1 = PI * _geo_to_decimal(lon1) / 180.0
+    rlat2 = PI * _geo_to_decimal(lat2) / 180.0
+    rlon2 = PI * _geo_to_decimal(lon2) / 180.0
     RRR = 6378.388
     q1 = math.cos(rlon1 - rlon2)
     q2 = math.cos(rlat1 - rlat2)
