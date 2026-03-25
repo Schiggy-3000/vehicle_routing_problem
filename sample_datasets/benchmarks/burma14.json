@@ -7,8 +7,8 @@
     {
       "id": "loc_0",
       "label": "Depot",
-      "lat": 47.291398,
-      "lng": 7.914937,
+      "lat": 16.47,
+      "lng": 96.1,
       "demand": 0,
       "time_window": [
         0,
@@ -18,8 +18,8 @@
     {
       "id": "loc_1",
       "label": "City 1",
-      "lat": 47.202151,
-      "lng": 7.914937,
+      "lat": 16.47,
+      "lng": 94.44,
       "demand": 0,
       "time_window": [
         0,
@@ -29,8 +29,8 @@
     {
       "id": "loc_2",
       "label": "City 2",
-      "lat": 47.1,
-      "lng": 8.012075,
+      "lat": 20.09,
+      "lng": 92.54,
       "demand": 0,
       "time_window": [
         0,
@@ -40,8 +40,8 @@
     {
       "id": "loc_3",
       "label": "City 3",
-      "lat": 47.144624,
-      "lng": 8.073792,
+      "lat": 22.39,
+      "lng": 93.37,
       "demand": 0,
       "time_window": [
         0,
@@ -51,8 +51,8 @@
     {
       "id": "loc_4",
       "label": "City 4",
-      "lat": 47.352688,
-      "lng": 8.15,
+      "lat": 25.23,
+      "lng": 97.24,
       "demand": 0,
       "time_window": [
         0,
@@ -62,8 +62,8 @@
     {
       "id": "loc_5",
       "label": "City 5",
-      "lat": 47.28871,
-      "lng": 8.063327,
+      "lat": 22.0,
+      "lng": 96.05,
       "demand": 0,
       "time_window": [
         0,
@@ -73,8 +73,8 @@
     {
       "id": "loc_6",
       "label": "City 6",
-      "lat": 47.34086,
-      "lng": 8.022272,
+      "lat": 20.47,
+      "lng": 97.02,
       "demand": 0,
       "time_window": [
         0,
@@ -84,8 +84,8 @@
     {
       "id": "loc_7",
       "label": "City 7",
-      "lat": 47.301613,
-      "lng": 7.934526,
+      "lat": 17.2,
+      "lng": 96.29,
       "demand": 0,
       "time_window": [
         0,
@@ -95,8 +95,8 @@
     {
       "id": "loc_8",
       "label": "City 8",
-      "lat": 47.360215,
-      "lng": 7.910376,
+      "lat": 16.3,
+      "lng": 97.38,
       "demand": 0,
       "time_window": [
         0,
@@ -106,8 +106,8 @@
     {
       "id": "loc_9",
       "label": "City 9",
-      "lat": 47.4,
-      "lng": 7.85,
+      "lat": 14.05,
+      "lng": 98.12,
       "demand": 0,
       "time_window": [
         0,
@@ -117,8 +117,8 @@
     {
       "id": "loc_10",
       "label": "City 10",
-      "lat": 47.360215,
-      "lng": 7.916547,
+      "lat": 16.53,
+      "lng": 97.38,
       "demand": 0,
       "time_window": [
         0,
@@ -128,8 +128,8 @@
     {
       "id": "loc_11",
       "label": "City 11",
-      "lat": 47.263978,
-      "lng": 8.050447,
+      "lat": 21.52,
+      "lng": 95.59,
       "demand": 0,
       "time_window": [
         0,
@@ -139,8 +139,8 @@
     {
       "id": "loc_12",
       "label": "City 12",
-      "lat": 47.346774,
-      "lng": 7.993828,
+      "lat": 19.41,
+      "lng": 97.13,
       "demand": 0,
       "time_window": [
         0,
@@ -150,8 +150,8 @@
     {
       "id": "loc_13",
       "label": "City 13",
-      "lat": 47.208065,
-      "lng": 8.012075,
+      "lat": 20.09,
+      "lng": 94.55,
       "demand": 0,
       "time_window": [
         0,

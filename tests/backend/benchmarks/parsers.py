@@ -114,9 +114,9 @@ def convert_burma14():
     text = _download(url)
     name, dim, raw_nodes = parse_tsplib(text)
 
-    # burma14 uses GEO coordinates
+    # burma14 uses real GEO coordinates (lat/lng) — use directly, no rescaling
     dist_matrix = _geo_matrix(raw_nodes)
-    coords = _scale_coords(raw_nodes)
+    coords = [(round(x, 6), round(y, 6)) for x, y in raw_nodes]
 
     locations = []
     for i, (lat, lng) in enumerate(coords):
