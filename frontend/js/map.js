@@ -114,7 +114,7 @@ export function unhighlightMarker(index) {
 export async function drawRoute(stops, vehicleIndex) {
   const color = VEHICLE_COLORS[vehicleIndex % VEHICLE_COLORS.length];
 
-  if (stops.length < 2) return;
+  if (stops.length < 2) return false;
 
   // Try Directions API for road-following routes
   try {
@@ -132,7 +132,7 @@ export async function drawRoute(stops, vehicleIndex) {
     // Directions API supports up to 25 waypoints; fall back to polylines if exceeded
     if (waypoints.length > 23) {
       _drawStraightLine(stops, color, vehicleIndex);
-      return;
+      return true;
     }
 
     const result = await directionsService.route({
@@ -157,9 +157,11 @@ export async function drawRoute(stops, vehicleIndex) {
     const routeObj = { obj: polyline, vehicleIndex, color };
     _addRouteHoverListeners(polyline, vehicleIndex);
     routeObjects.push(routeObj);
+    return false;
   } catch {
     // Fallback to straight lines if Directions API fails
     _drawStraightLine(stops, color, vehicleIndex);
+    return true;
   }
 }
 

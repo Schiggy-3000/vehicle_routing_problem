@@ -92,7 +92,10 @@ async function init() {
       clearBestKnownRoutes();
 
       if (response.status === "SUCCESS") {
-        await renderRoutes(response);
+        const usedStraightLines = await renderRoutes(response);
+        if (usedStraightLines) {
+          showToast("Road data unavailable for some routes — showing straight lines", "info", 5000);
+        }
 
         // Draw best-known routes as dashed overlay
         if (state.bestKnownRoutes) {
