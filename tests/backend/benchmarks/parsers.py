@@ -81,6 +81,14 @@ def parse_tsplib(text: str):
     return name, dimension, nodes
 
 
+def _geo_to_decimal(val):
+    """Convert TSPLIB degree.minute format to decimal degrees.
+    E.g., 38.24 means 38 degrees 24 minutes = 38.4 decimal degrees."""
+    deg = int(val)
+    minutes = val - deg
+    return round(deg + 5.0 * minutes / 3.0, 6)
+
+
 def _geo_distance(lat1, lon1, lat2, lon2):
     """TSPLIB GEO distance computation."""
     PI = 3.141592
@@ -128,7 +136,8 @@ def convert_tsplib_instance(name, best_known):
     _, dim, raw_nodes = parse_tsplib(text)
 
     dist_matrix = _geo_matrix(raw_nodes)
-    coords = [(round(x, 6), round(y, 6)) for x, y in raw_nodes]
+    # Convert TSPLIB degree.minute format to decimal degrees for map display
+    coords = [(_geo_to_decimal(x), _geo_to_decimal(y)) for x, y in raw_nodes]
 
     locations = []
     for i, (lat, lng) in enumerate(coords):

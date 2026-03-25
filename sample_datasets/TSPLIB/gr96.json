@@ -7,8 +7,8 @@
     {
       "id": "loc_0",
       "label": "Depot",
-      "lat": 14.55,
-      "lng": -23.31,
+      "lat": 14.916667,
+      "lng": -23.516667,
       "demand": 0,
       "time_window": [
         0,
@@ -18,8 +18,8 @@
     {
       "id": "loc_1",
       "label": "City 1",
-      "lat": 28.06,
-      "lng": -15.24,
+      "lat": 28.1,
+      "lng": -15.4,
       "demand": 0,
       "time_window": [
         0,
@@ -29,8 +29,8 @@
     {
       "id": "loc_2",
       "label": "City 2",
-      "lat": 32.38,
-      "lng": -16.54,
+      "lat": 32.633333,
+      "lng": -16.9,
       "demand": 0,
       "time_window": [
         0,
@@ -40,7 +40,7 @@
     {
       "id": "loc_3",
       "label": "City 3",
-      "lat": 31.38,
+      "lat": 31.633333,
       "lng": -8.0,
       "demand": 0,
       "time_window": [
@@ -51,8 +51,8 @@
     {
       "id": "loc_4",
       "label": "City 4",
-      "lat": 33.39,
-      "lng": -7.35,
+      "lat": 33.65,
+      "lng": -7.583333,
       "demand": 0,
       "time_window": [
         0,
@@ -62,8 +62,8 @@
     {
       "id": "loc_5",
       "label": "City 5",
-      "lat": 34.02,
-      "lng": -6.51,
+      "lat": 34.033333,
+      "lng": -6.85,
       "demand": 0,
       "time_window": [
         0,
@@ -73,8 +73,8 @@
     {
       "id": "loc_6",
       "label": "City 6",
-      "lat": 34.05,
-      "lng": -4.57,
+      "lat": 34.083333,
+      "lng": -4.95,
       "demand": 0,
       "time_window": [
         0,
@@ -84,8 +84,8 @@
     {
       "id": "loc_7",
       "label": "City 7",
-      "lat": 35.48,
-      "lng": -5.45,
+      "lat": 35.8,
+      "lng": -5.75,
       "demand": 0,
       "time_window": [
         0,
@@ -95,8 +95,8 @@
     {
       "id": "loc_8",
       "label": "City 8",
-      "lat": 35.43,
-      "lng": -0.43,
+      "lat": 35.716667,
+      "lng": -0.716667,
       "demand": 0,
       "time_window": [
         0,
@@ -106,8 +106,8 @@
     {
       "id": "loc_9",
       "label": "City 9",
-      "lat": 36.47,
-      "lng": 3.03,
+      "lat": 36.783333,
+      "lng": 3.05,
       "demand": 0,
       "time_window": [
         0,
@@ -117,8 +117,8 @@
     {
       "id": "loc_10",
       "label": "City 10",
-      "lat": 22.56,
-      "lng": 5.3,
+      "lat": 22.933333,
+      "lng": 5.5,
       "demand": 0,
       "time_window": [
         0,
@@ -128,8 +128,8 @@
     {
       "id": "loc_11",
       "label": "City 11",
-      "lat": 36.22,
-      "lng": 6.37,
+      "lat": 36.366667,
+      "lng": 6.616667,
       "demand": 0,
       "time_window": [
         0,
@@ -139,8 +139,8 @@
     {
       "id": "loc_12",
       "label": "City 12",
-      "lat": 36.48,
-      "lng": 10.11,
+      "lat": 36.8,
+      "lng": 10.183333,
       "demand": 0,
       "time_window": [
         0,
@@ -150,8 +150,8 @@
     {
       "id": "loc_13",
       "label": "City 13",
-      "lat": 34.44,
-      "lng": 10.46,
+      "lat": 34.733333,
+      "lng": 10.766667,
       "demand": 0,
       "time_window": [
         0,
@@ -161,8 +161,8 @@
     {
       "id": "loc_14",
       "label": "City 14",
-      "lat": 32.54,
-      "lng": 13.11,
+      "lat": 32.9,
+      "lng": 13.183333,
       "demand": 0,
       "time_window": [
         0,
@@ -172,8 +172,8 @@
     {
       "id": "loc_15",
       "label": "City 15",
-      "lat": 32.07,
-      "lng": 20.04,
+      "lat": 32.116667,
+      "lng": 20.066667,
       "demand": 0,
       "time_window": [
         0,
@@ -183,8 +183,8 @@
     {
       "id": "loc_16",
       "label": "City 16",
-      "lat": 31.12,
-      "lng": 29.54,
+      "lat": 31.2,
+      "lng": 29.9,
       "demand": 0,
       "time_window": [
         0,
@@ -194,8 +194,8 @@
     {
       "id": "loc_17",
       "label": "City 17",
-      "lat": 31.16,
-      "lng": 32.18,
+      "lat": 31.266667,
+      "lng": 32.3,
       "demand": 0,
       "time_window": [
         0,
@@ -205,8 +205,8 @@
     {
       "id": "loc_18",
       "label": "City 18",
-      "lat": 29.58,
-      "lng": 32.33,
+      "lat": 29.966667,
+      "lng": 32.55,
       "demand": 0,
       "time_window": [
         0,
@@ -216,8 +216,8 @@
     {
       "id": "loc_19",
       "label": "City 19",
-      "lat": 30.03,
-      "lng": 31.15,
+      "lat": 30.05,
+      "lng": 31.25,
       "demand": 0,
       "time_window": [
         0,
@@ -227,8 +227,8 @@
     {
       "id": "loc_20",
       "label": "City 20",
-      "lat": 24.05,
-      "lng": 32.53,
+      "lat": 24.083333,
+      "lng": 32.883333,
       "demand": 0,
       "time_window": [
         0,
@@ -238,8 +238,8 @@
     {
       "id": "loc_21",
       "label": "City 21",
-      "lat": 19.37,
-      "lng": 37.14,
+      "lat": 19.616667,
+      "lng": 37.233333,
       "demand": 0,
       "time_window": [
         0,
@@ -249,8 +249,8 @@
     {
       "id": "loc_22",
       "label": "City 22",
-      "lat": 15.36,
-      "lng": 32.32,
+      "lat": 15.6,
+      "lng": 32.533333,
       "demand": 0,
       "time_window": [
         0,
@@ -260,8 +260,8 @@
     {
       "id": "loc_23",
       "label": "City 23",
-      "lat": 13.11,
-      "lng": 30.13,
+      "lat": 13.183333,
+      "lng": 30.216667,
       "demand": 0,
       "time_window": [
         0,
@@ -271,8 +271,8 @@
     {
       "id": "loc_24",
       "label": "City 24",
-      "lat": 13.38,
-      "lng": 25.21,
+      "lat": 13.633333,
+      "lng": 25.35,
       "demand": 0,
       "time_window": [
         0,
@@ -282,8 +282,8 @@
     {
       "id": "loc_25",
       "label": "City 25",
-      "lat": 15.2,
-      "lng": 38.53,
+      "lat": 15.333333,
+      "lng": 38.883333,
       "demand": 0,
       "time_window": [
         0,
@@ -294,7 +294,7 @@
       "id": "loc_26",
       "label": "City 26",
       "lat": 9.0,
-      "lng": 38.5,
+      "lng": 38.833333,
       "demand": 0,
       "time_window": [
         0,
@@ -304,8 +304,8 @@
     {
       "id": "loc_27",
       "label": "City 27",
-      "lat": 11.36,
-      "lng": 43.09,
+      "lat": 11.6,
+      "lng": 43.15,
       "demand": 0,
       "time_window": [
         0,
@@ -315,8 +315,8 @@
     {
       "id": "loc_28",
       "label": "City 28",
-      "lat": 18.06,
-      "lng": -15.57,
+      "lat": 18.1,
+      "lng": -15.95,
       "demand": 0,
       "time_window": [
         0,
@@ -326,8 +326,8 @@
     {
       "id": "loc_29",
       "label": "City 29",
-      "lat": 14.4,
-      "lng": -17.26,
+      "lat": 14.666667,
+      "lng": -17.433333,
       "demand": 0,
       "time_window": [
         0,
@@ -337,8 +337,8 @@
     {
       "id": "loc_30",
       "label": "City 30",
-      "lat": 13.28,
-      "lng": -16.39,
+      "lat": 13.466667,
+      "lng": -16.65,
       "demand": 0,
       "time_window": [
         0,
@@ -348,8 +348,8 @@
     {
       "id": "loc_31",
       "label": "City 31",
-      "lat": 11.51,
-      "lng": -15.35,
+      "lat": 11.85,
+      "lng": -15.583333,
       "demand": 0,
       "time_window": [
         0,
@@ -359,8 +359,8 @@
     {
       "id": "loc_32",
       "label": "City 32",
-      "lat": 16.46,
-      "lng": -3.01,
+      "lat": 16.766667,
+      "lng": -3.016667,
       "demand": 0,
       "time_window": [
         0,
@@ -370,7 +370,7 @@
     {
       "id": "loc_33",
       "label": "City 33",
-      "lat": 12.39,
+      "lat": 12.65,
       "lng": -8.0,
       "demand": 0,
       "time_window": [
@@ -381,8 +381,8 @@
     {
       "id": "loc_34",
       "label": "City 34",
-      "lat": 10.23,
-      "lng": -9.18,
+      "lat": 10.383333,
+      "lng": -9.3,
       "demand": 0,
       "time_window": [
         0,
@@ -392,8 +392,8 @@
     {
       "id": "loc_35",
       "label": "City 35",
-      "lat": 9.31,
-      "lng": -13.43,
+      "lat": 9.516667,
+      "lng": -13.716667,
       "demand": 0,
       "time_window": [
         0,
@@ -403,8 +403,8 @@
     {
       "id": "loc_36",
       "label": "City 36",
-      "lat": 8.3,
-      "lng": -13.15,
+      "lat": 8.5,
+      "lng": -13.25,
       "demand": 0,
       "time_window": [
         0,
@@ -414,8 +414,8 @@
     {
       "id": "loc_37",
       "label": "City 37",
-      "lat": 6.18,
-      "lng": -10.47,
+      "lat": 6.3,
+      "lng": -10.783333,
       "demand": 0,
       "time_window": [
         0,
@@ -425,8 +425,8 @@
     {
       "id": "loc_38",
       "label": "City 38",
-      "lat": 5.19,
-      "lng": -4.02,
+      "lat": 5.316667,
+      "lng": -4.033333,
       "demand": 0,
       "time_window": [
         0,
@@ -436,8 +436,8 @@
     {
       "id": "loc_39",
       "label": "City 39",
-      "lat": 6.41,
-      "lng": -1.35,
+      "lat": 6.683333,
+      "lng": -1.583333,
       "demand": 0,
       "time_window": [
         0,
@@ -447,8 +447,8 @@
     {
       "id": "loc_40",
       "label": "City 40",
-      "lat": 5.33,
-      "lng": -0.13,
+      "lat": 5.55,
+      "lng": -0.216667,
       "demand": 0,
       "time_window": [
         0,
@@ -458,8 +458,8 @@
     {
       "id": "loc_41",
       "label": "City 41",
-      "lat": 6.08,
-      "lng": 1.13,
+      "lat": 6.133333,
+      "lng": 1.216667,
       "demand": 0,
       "time_window": [
         0,
@@ -469,8 +469,8 @@
     {
       "id": "loc_42",
       "label": "City 42",
-      "lat": 6.29,
-      "lng": 2.37,
+      "lat": 6.483333,
+      "lng": 2.616667,
       "demand": 0,
       "time_window": [
         0,
@@ -480,8 +480,8 @@
     {
       "id": "loc_43",
       "label": "City 43",
-      "lat": 12.22,
-      "lng": -1.31,
+      "lat": 12.366667,
+      "lng": -1.516667,
       "demand": 0,
       "time_window": [
         0,
@@ -491,8 +491,8 @@
     {
       "id": "loc_44",
       "label": "City 44",
-      "lat": 13.31,
-      "lng": 2.07,
+      "lat": 13.516667,
+      "lng": 2.116667,
       "demand": 0,
       "time_window": [
         0,
@@ -503,7 +503,7 @@
       "id": "loc_45",
       "label": "City 45",
       "lat": 12.0,
-      "lng": 8.3,
+      "lng": 8.5,
       "demand": 0,
       "time_window": [
         0,
@@ -513,8 +513,8 @@
     {
       "id": "loc_46",
       "label": "City 46",
-      "lat": 11.51,
-      "lng": 13.1,
+      "lat": 11.85,
+      "lng": 13.166667,
       "demand": 0,
       "time_window": [
         0,
@@ -524,8 +524,8 @@
     {
       "id": "loc_47",
       "label": "City 47",
-      "lat": 12.07,
-      "lng": 15.03,
+      "lat": 12.116667,
+      "lng": 15.05,
       "demand": 0,
       "time_window": [
         0,
@@ -535,8 +535,8 @@
     {
       "id": "loc_48",
       "label": "City 48",
-      "lat": 6.27,
-      "lng": 3.24,
+      "lat": 6.45,
+      "lng": 3.4,
       "demand": 0,
       "time_window": [
         0,
@@ -546,8 +546,8 @@
     {
       "id": "loc_49",
       "label": "City 49",
-      "lat": 6.27,
-      "lng": 7.27,
+      "lat": 6.45,
+      "lng": 7.45,
       "demand": 0,
       "time_window": [
         0,
@@ -557,8 +557,8 @@
     {
       "id": "loc_50",
       "label": "City 50",
-      "lat": 0.2,
-      "lng": 6.44,
+      "lat": 0.333333,
+      "lng": 6.733333,
       "demand": 0,
       "time_window": [
         0,
@@ -568,8 +568,8 @@
     {
       "id": "loc_51",
       "label": "City 51",
-      "lat": 3.45,
-      "lng": 8.47,
+      "lat": 3.75,
+      "lng": 8.783333,
       "demand": 0,
       "time_window": [
         0,
@@ -579,8 +579,8 @@
     {
       "id": "loc_52",
       "label": "City 52",
-      "lat": 3.52,
-      "lng": 11.31,
+      "lat": 3.866667,
+      "lng": 11.516667,
       "demand": 0,
       "time_window": [
         0,
@@ -590,8 +590,8 @@
     {
       "id": "loc_53",
       "label": "City 53",
-      "lat": 4.22,
-      "lng": 18.35,
+      "lat": 4.366667,
+      "lng": 18.583333,
       "demand": 0,
       "time_window": [
         0,
@@ -601,8 +601,8 @@
     {
       "id": "loc_54",
       "label": "City 54",
-      "lat": 0.23,
-      "lng": 9.27,
+      "lat": 0.383333,
+      "lng": 9.45,
       "demand": 0,
       "time_window": [
         0,
@@ -612,8 +612,8 @@
     {
       "id": "loc_55",
       "label": "City 55",
-      "lat": -4.16,
-      "lng": 15.17,
+      "lat": -4.266667,
+      "lng": 15.283333,
       "demand": 0,
       "time_window": [
         0,
@@ -623,8 +623,8 @@
     {
       "id": "loc_56",
       "label": "City 56",
-      "lat": -4.18,
-      "lng": 15.18,
+      "lat": -4.3,
+      "lng": 15.3,
       "demand": 0,
       "time_window": [
         0,
@@ -634,8 +634,8 @@
     {
       "id": "loc_57",
       "label": "City 57",
-      "lat": 0.04,
-      "lng": 18.16,
+      "lat": 0.066667,
+      "lng": 18.266667,
       "demand": 0,
       "time_window": [
         0,
@@ -645,8 +645,8 @@
     {
       "id": "loc_58",
       "label": "City 58",
-      "lat": -5.54,
-      "lng": 22.25,
+      "lat": -5.9,
+      "lng": 22.416667,
       "demand": 0,
       "time_window": [
         0,
@@ -656,8 +656,8 @@
     {
       "id": "loc_59",
       "label": "City 59",
-      "lat": 0.3,
-      "lng": 25.12,
+      "lat": 0.5,
+      "lng": 25.2,
       "demand": 0,
       "time_window": [
         0,
@@ -667,8 +667,8 @@
     {
       "id": "loc_60",
       "label": "City 60",
-      "lat": -3.23,
-      "lng": 29.22,
+      "lat": -3.383333,
+      "lng": 29.366667,
       "demand": 0,
       "time_window": [
         0,
@@ -678,8 +678,8 @@
     {
       "id": "loc_61",
       "label": "City 61",
-      "lat": -1.57,
-      "lng": 30.04,
+      "lat": -1.95,
+      "lng": 30.066667,
       "demand": 0,
       "time_window": [
         0,
@@ -689,8 +689,8 @@
     {
       "id": "loc_62",
       "label": "City 62",
-      "lat": 0.19,
-      "lng": 32.25,
+      "lat": 0.316667,
+      "lng": 32.416667,
       "demand": 0,
       "time_window": [
         0,
@@ -700,8 +700,8 @@
     {
       "id": "loc_63",
       "label": "City 63",
-      "lat": -1.17,
-      "lng": 36.49,
+      "lat": -1.283333,
+      "lng": 36.816667,
       "demand": 0,
       "time_window": [
         0,
@@ -711,8 +711,8 @@
     {
       "id": "loc_64",
       "label": "City 64",
-      "lat": 2.01,
-      "lng": 45.2,
+      "lat": 2.016667,
+      "lng": 45.333333,
       "demand": 0,
       "time_window": [
         0,
@@ -722,8 +722,8 @@
     {
       "id": "loc_65",
       "label": "City 65",
-      "lat": -4.03,
-      "lng": 39.4,
+      "lat": -4.05,
+      "lng": 39.666667,
       "demand": 0,
       "time_window": [
         0,
@@ -733,8 +733,8 @@
     {
       "id": "loc_66",
       "label": "City 66",
-      "lat": -6.1,
-      "lng": 39.11,
+      "lat": -6.166667,
+      "lng": 39.183333,
       "demand": 0,
       "time_window": [
         0,
@@ -744,8 +744,8 @@
     {
       "id": "loc_67",
       "label": "City 67",
-      "lat": -6.48,
-      "lng": 39.17,
+      "lat": -6.8,
+      "lng": 39.283333,
       "demand": 0,
       "time_window": [
         0,
@@ -755,8 +755,8 @@
     {
       "id": "loc_68",
       "label": "City 68",
-      "lat": -8.48,
-      "lng": 13.14,
+      "lat": -8.8,
+      "lng": 13.233333,
       "demand": 0,
       "time_window": [
         0,
@@ -766,8 +766,8 @@
     {
       "id": "loc_69",
       "label": "City 69",
-      "lat": -12.44,
-      "lng": 15.47,
+      "lat": -12.733333,
+      "lng": 15.783333,
       "demand": 0,
       "time_window": [
         0,
@@ -777,8 +777,8 @@
     {
       "id": "loc_70",
       "label": "City 70",
-      "lat": -11.4,
-      "lng": 27.28,
+      "lat": -11.666667,
+      "lng": 27.466667,
       "demand": 0,
       "time_window": [
         0,
@@ -788,8 +788,8 @@
     {
       "id": "loc_71",
       "label": "City 71",
-      "lat": -12.49,
-      "lng": 28.13,
+      "lat": -12.816667,
+      "lng": 28.216667,
       "demand": 0,
       "time_window": [
         0,
@@ -799,8 +799,8 @@
     {
       "id": "loc_72",
       "label": "City 72",
-      "lat": -15.25,
-      "lng": 28.17,
+      "lat": -15.416667,
+      "lng": 28.283333,
       "demand": 0,
       "time_window": [
         0,
@@ -810,8 +810,8 @@
     {
       "id": "loc_73",
       "label": "City 73",
-      "lat": -20.09,
-      "lng": 28.36,
+      "lat": -20.15,
+      "lng": 28.6,
       "demand": 0,
       "time_window": [
         0,
@@ -821,8 +821,8 @@
     {
       "id": "loc_74",
       "label": "City 74",
-      "lat": -17.5,
-      "lng": 31.03,
+      "lat": -17.833333,
+      "lng": 31.05,
       "demand": 0,
       "time_window": [
         0,
@@ -832,7 +832,7 @@
     {
       "id": "loc_75",
       "label": "City 75",
-      "lat": -15.47,
+      "lat": -15.783333,
       "lng": 35.0,
       "demand": 0,
       "time_window": [
@@ -843,8 +843,8 @@
     {
       "id": "loc_76",
       "label": "City 76",
-      "lat": -19.49,
-      "lng": 34.52,
+      "lat": -19.816667,
+      "lng": 34.866667,
       "demand": 0,
       "time_window": [
         0,
@@ -854,8 +854,8 @@
     {
       "id": "loc_77",
       "label": "City 77",
-      "lat": -25.58,
-      "lng": 32.35,
+      "lat": -25.966667,
+      "lng": 32.583333,
       "demand": 0,
       "time_window": [
         0,
@@ -865,8 +865,8 @@
     {
       "id": "loc_78",
       "label": "City 78",
-      "lat": -15.57,
-      "lng": -5.42,
+      "lat": -15.95,
+      "lng": -5.7,
       "demand": 0,
       "time_window": [
         0,
@@ -876,8 +876,8 @@
     {
       "id": "loc_79",
       "label": "City 79",
-      "lat": -37.15,
-      "lng": -12.3,
+      "lat": -37.25,
+      "lng": -12.5,
       "demand": 0,
       "time_window": [
         0,
@@ -887,8 +887,8 @@
     {
       "id": "loc_80",
       "label": "City 80",
-      "lat": -22.59,
-      "lng": 14.31,
+      "lat": -22.983333,
+      "lng": 14.516667,
       "demand": 0,
       "time_window": [
         0,
@@ -898,8 +898,8 @@
     {
       "id": "loc_81",
       "label": "City 81",
-      "lat": -22.34,
-      "lng": 17.06,
+      "lat": -22.566667,
+      "lng": 17.1,
       "demand": 0,
       "time_window": [
         0,
@@ -909,8 +909,8 @@
     {
       "id": "loc_82",
       "label": "City 82",
-      "lat": -26.38,
-      "lng": 15.1,
+      "lat": -26.633333,
+      "lng": 15.166667,
       "demand": 0,
       "time_window": [
         0,
@@ -920,8 +920,8 @@
     {
       "id": "loc_83",
       "label": "City 83",
-      "lat": -24.45,
-      "lng": 25.55,
+      "lat": -24.75,
+      "lng": 25.916667,
       "demand": 0,
       "time_window": [
         0,
@@ -931,8 +931,8 @@
     {
       "id": "loc_84",
       "label": "City 84",
-      "lat": -25.45,
-      "lng": 28.1,
+      "lat": -25.75,
+      "lng": 28.166667,
       "demand": 0,
       "time_window": [
         0,
@@ -942,7 +942,7 @@
     {
       "id": "loc_85",
       "label": "City 85",
-      "lat": -26.15,
+      "lat": -26.25,
       "lng": 28.0,
       "demand": 0,
       "time_window": [
@@ -953,8 +953,8 @@
     {
       "id": "loc_86",
       "label": "City 86",
-      "lat": -29.12,
-      "lng": 26.07,
+      "lat": -29.2,
+      "lng": 26.116667,
       "demand": 0,
       "time_window": [
         0,
@@ -964,8 +964,8 @@
     {
       "id": "loc_87",
       "label": "City 87",
-      "lat": -29.55,
-      "lng": 30.56,
+      "lat": -29.916667,
+      "lng": 30.933333,
       "demand": 0,
       "time_window": [
         0,
@@ -976,7 +976,7 @@
       "id": "loc_88",
       "label": "City 88",
       "lat": -33.0,
-      "lng": 27.55,
+      "lng": 27.916667,
       "demand": 0,
       "time_window": [
         0,
@@ -986,8 +986,8 @@
     {
       "id": "loc_89",
       "label": "City 89",
-      "lat": -33.58,
-      "lng": 25.4,
+      "lat": -33.966667,
+      "lng": 25.666667,
       "demand": 0,
       "time_window": [
         0,
@@ -997,8 +997,8 @@
     {
       "id": "loc_90",
       "label": "City 90",
-      "lat": -33.55,
-      "lng": 18.22,
+      "lat": -33.916667,
+      "lng": 18.366667,
       "demand": 0,
       "time_window": [
         0,
@@ -1008,8 +1008,8 @@
     {
       "id": "loc_91",
       "label": "City 91",
-      "lat": -23.21,
-      "lng": 43.4,
+      "lat": -23.35,
+      "lng": 43.666667,
       "demand": 0,
       "time_window": [
         0,
@@ -1019,8 +1019,8 @@
     {
       "id": "loc_92",
       "label": "City 92",
-      "lat": -18.55,
-      "lng": 47.31,
+      "lat": -18.916667,
+      "lng": 47.516667,
       "demand": 0,
       "time_window": [
         0,
@@ -1030,8 +1030,8 @@
     {
       "id": "loc_93",
       "label": "City 93",
-      "lat": -12.16,
-      "lng": 49.17,
+      "lat": -12.266667,
+      "lng": 49.283333,
       "demand": 0,
       "time_window": [
         0,
@@ -1041,8 +1041,8 @@
     {
       "id": "loc_94",
       "label": "City 94",
-      "lat": -20.1,
-      "lng": 57.3,
+      "lat": -20.166667,
+      "lng": 57.5,
       "demand": 0,
       "time_window": [
         0,
@@ -1052,8 +1052,8 @@
     {
       "id": "loc_95",
       "label": "City 95",
-      "lat": -4.38,
-      "lng": 55.27,
+      "lat": -4.633333,
+      "lng": 55.45,
       "demand": 0,
       "time_window": [
         0,
