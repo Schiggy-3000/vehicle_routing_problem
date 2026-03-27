@@ -1,0 +1,30 @@
+Credentials
+- Service accounts (+permissions)
+- API tokens (+permissions)
+
+Frontend
+- Desktop & mobile compatible
+- Tech Stack
+    - Frontend
+        - Typescript (superset of JavaScript)
+        - JavaScript
+    - Backend
+        - Python
+- Testing
+    - Agent can do frontend tests by itselfe with: playwright python
+        - pip install playwright pytest-playwright
+        - playwright install chromium
+
+App development
+- Google Play Console
+    - Where apps are created (.aab file, testing, developer profile, goals of the app, ...)
+- Google Play Store
+    - Where apps can be downloaded
+- Expo
+    - Emulator to look at code changes (phone <-> "Webserver", instead of installing a new app version after every change)
+    - Building app installation packages (.apk file: Android Package Kit)
+    - Push .apk/.aab (Android App Bundle) to Google Play Console
+    - .apk/.aab automatisch von Expo zu Google Play Console pushen
+        - GCP > Service Account erstellen
+        - Service Account bei Expo hinzufügen > Android & iOS credentials > Google Service Account Keys > JSON hochladen
+        - Service Account als User bei Google Play Console hinzufügen: Users and permissions > Click on three dots > Invite new users

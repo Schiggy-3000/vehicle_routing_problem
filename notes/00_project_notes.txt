@@ -1,4 +1,32 @@
 ### Links
+
+NEO > VRP solution methods: https://neo.lcc.uma.es/vrp/solution-methods/
+VROOM > Solver: https://github.com/VROOM-Project/vroom
+Jsprit > Solver: https://github.com/graphhopper/jsprit
 Googe OR-Tools > Vehicle Routing Problem (VRP): https://developers.google.com/optimization/routing/vrp
 Google Distance Matrix API doc: https://developers.google.com/maps/documentation/distance-matrix
 Google Distance Matrix API doc > parameter reference: https://developers.google.com/maps/documentation/distance-matrix/distance-matrix#maps_http_distancematrix_latlng-txt
+
+### Datasets
+
+SOLOMON Benchmark: ........
+Gehring & Homberger: ........
+Mendeley Data: https://data.mendeley.com/datasets/b2h8drfms4/2
+
+
+TSPLIB Uni Heidelberg (Github Repo) https://github.com/mastqe/tsplib
+TSPLIB Uni Heidelberg (Original source but sometimes server is unavailable) http://comopt.ifi.uni-heidelberg.de/software/TSPLIB95/
+TSPLIB Uni Heidelberg (Original source in wayback machine when server is unavailable) https://web.archive.org/web/*/http://comopt.ifi.uni-heidelberg.de/software/TSPLIB95/
+
+Careful with the TSPLIB data.
+
+1. Geo location data is in degree.minutes format.
+When you see 38.24, that doesn't mean 38.24°. It means 38 degrees, 24 minutes
+For converting coordinate input to longitude and latitude in radian:
+PI = 3.141592;
+deg = (int) x[i];
+min = x[i]- deg;
+rad = PI * (deg + 5.0 * min/ 3.0) / 180.0;
+
+2. The best known solution (https://github.com/mastqe/tsplib/blob/master/solutions) to each TSP instance uses great-circle (haversine-like) distance, not road distances between locations.
+Consequently, the actual road distance will always be greater.
