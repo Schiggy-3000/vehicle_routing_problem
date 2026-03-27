@@ -180,5 +180,13 @@
     "best_known_metric": "geodesic",
     "quality_threshold": 5.0
   },
-  "best_known_routes": []
+  "best_known_routes": [
+    {
+      "stop_ids": [
+        "loc_0", "loc_1", "loc_13", "loc_2", "loc_3", "loc_11",
+        "loc_5", "loc_6", "loc_12", "loc_7", "loc_10", "loc_8",
+        "loc_9", "loc_4", "loc_0"
+      ]
+    }
+  ]
 }

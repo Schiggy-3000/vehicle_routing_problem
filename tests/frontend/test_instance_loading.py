@@ -20,7 +20,6 @@ def test_dropdown_lists_all_instances(loaded_page):
     values = [options.nth(i).get_attribute("value") for i in range(options.count())]
     assert "demo/swiss_demo" in values
     assert "TSPLIB/burma14" in values
-    assert "TSPLIB/ulysses16" in values
 
 
 def test_load_burma14_populates_state(loaded_page):

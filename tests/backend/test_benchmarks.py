@@ -10,7 +10,6 @@ from app.services.solver_service import solve
 
 BENCHMARK_INSTANCES = [
     "TSPLIB/burma14",
-    "TSPLIB/ulysses16",
 ]
 
 

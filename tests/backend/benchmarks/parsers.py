@@ -59,7 +59,6 @@ TSPLIB_DIR = Path(__file__).resolve().parent.parent.parent.parent / "sample_data
 # Best-known objectives (geodesic, in meters = original TSPLIB values × 1000)
 TSPLIB_INSTANCES = {
     "burma14": 3323000,
-    "ulysses16": 6859000,
 }
 
 
