@@ -9,7 +9,7 @@
   <br />
   Place locations on a map, configure vehicles and constraints, and visualize optimized routes.
   <br /><br />
-  <a href="https://schiggy-3000.github.io/vehicle_routing_problem/frontend/"><strong>Live Demo</strong></a>
+  <a href="https://schiggy-3000.github.io/vehicle_routing_problem/"><strong>Live Demo</strong></a>
 </p>
 
 ---
