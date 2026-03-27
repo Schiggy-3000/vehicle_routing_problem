@@ -1,6 +1,6 @@
 {
   "name": "burma14 (TSPLIB)",
-  "description": "14 cities \u2014 best known (geodesic) = 3323000 m",
+  "description": "14 cities in Myanmar (TSPLIB GEO instance)",
   "problem_type": "TSP",
   "category": "TSPLIB",
   "distance_metric": "road",
@@ -176,7 +176,6 @@
     "status": "SUCCESS",
     "objective_value": null,
     "num_routes": 1,
-    "best_known_objective": 3323000,
     "best_known_metric": "geodesic",
     "quality_threshold": 5.0
   },

@@ -56,11 +56,13 @@ export function renderTable(solutionResponse, problemType, instanceExpected = nu
   }
 
   // Best-known comparison
+  const bkComputed = bestKnownStops?.length >= 2 ? computeGeoTourDistance(bestKnownStops) : null;
+  const bk = bkComputed ?? instanceExpected?.best_known_objective ?? null;
+  const bkMetric = bkComputed ? "geodesic" : (instanceExpected?.best_known_metric || null);
+
   let bestKnownNote = "";
-  if (instanceExpected?.best_known_objective != null && solutionResponse.status === "SUCCESS") {
+  if (bk != null && solutionResponse.status === "SUCCESS") {
     const totalDist = solutionResponse.routes.reduce((sum, r) => sum + r.total_distance_m, 0);
-    const bk = instanceExpected.best_known_objective;
-    const bkMetric = instanceExpected.best_known_metric || null;
     const solverMetric = distanceMetric || null;
     const crossMetric = bkMetric && solverMetric && bkMetric !== solverMetric;
 
@@ -83,12 +85,8 @@ export function renderTable(solutionResponse, problemType, instanceExpected = nu
   let bestKnownRow = "";
   if (bestKnownStops && bestKnownStops.length >= 2) {
     const bkStopsStr = bestKnownStops.map((s) => s.label).join(" &rarr; ");
-    const bkDistStr = instanceExpected?.best_known_objective != null
-      ? `${(instanceExpected.best_known_objective / 1000).toFixed(1)} km`
-      : "—";
-    const bkMetricLabel = instanceExpected?.best_known_metric
-      ? ` <small>(${instanceExpected.best_known_metric})</small>`
-      : "";
+    const bkDistStr = bk != null ? `${(bk / 1000).toFixed(1)} km` : "—";
+    const bkMetricLabel = bkMetric ? ` <small>(${bkMetric})</small>` : "";
 
     bestKnownRow = `
       <div class="route-row best-known-row" style="border-left-color: #888;">
@@ -169,4 +167,27 @@ function _fmtTime(seconds) {
   const h = String(Math.floor(seconds / 3600)).padStart(2, "0");
   const m = String(Math.floor((seconds % 3600) / 60)).padStart(2, "0");
   return `${h}:${m}`;
+}
+
+// ── TSPLIB GEO distance (exact formula from TSPLIB95 spec) ──────────
+
+function _tsplibGeoEdge(a, b) {
+  const PI = 3.141592;
+  const RRR = 6378.388;
+  const latA = PI * a.lat / 180.0;
+  const lngA = PI * a.lng / 180.0;
+  const latB = PI * b.lat / 180.0;
+  const lngB = PI * b.lng / 180.0;
+  const q1 = Math.cos(lngA - lngB);
+  const q2 = Math.cos(latA - latB);
+  const q3 = Math.cos(latA + latB);
+  return Math.floor(RRR * Math.acos(0.5 * ((1 + q1) * q2 - (1 - q1) * q3)) + 1.0);
+}
+
+export function computeGeoTourDistance(stops) {
+  let total = 0;
+  for (let i = 0; i < stops.length - 1; i++) {
+    total += _tsplibGeoEdge(stops[i], stops[i + 1]);
+  }
+  return total * 1000; // km → meters
 }

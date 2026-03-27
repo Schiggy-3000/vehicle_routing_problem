@@ -56,15 +56,15 @@ def _geo_to_decimal(val):
 TSPLIB_REPO = "https://raw.githubusercontent.com/mastqe/tsplib/refs/heads/master"
 TSPLIB_DIR = Path(__file__).resolve().parent.parent.parent.parent / "sample_datasets" / "TSPLIB"
 
-# Best-known objectives (geodesic, in meters = original TSPLIB values × 1000)
-TSPLIB_INSTANCES = {
-    "burma14": 3323000,
-}
+TSPLIB_INSTANCES = [
+    "burma14",
+]
 
 
-def convert_tsplib_instance(name, best_known):
+def convert_tsplib_instance(name):
     """Download and convert a TSPLIB GEO instance to JSON.
     Distance matrix is left empty — backend computes road distances via Google API at solve time.
+    Best-known distance is computed by the frontend from the tour + TSPLIB GEO formula.
     """
     url = f"{TSPLIB_REPO}/{name}.tsp"
     text = _download(url)
@@ -82,7 +82,7 @@ def convert_tsplib_instance(name, best_known):
 
     data = {
         "name": f"{name} (TSPLIB)",
-        "description": f"{dim} cities — best known (geodesic) = {best_known} m",
+        "description": f"{dim} cities (TSPLIB GEO instance)",
         "problem_type": "TSP",
         "category": "TSPLIB",
         "distance_metric": "road",
@@ -96,7 +96,6 @@ def convert_tsplib_instance(name, best_known):
             "status": "SUCCESS",
             "objective_value": None,
             "num_routes": 1,
-            "best_known_objective": best_known,
             "best_known_metric": "geodesic",
             "quality_threshold": 5.0
         },
@@ -112,8 +111,8 @@ def convert_tsplib_instance(name, best_known):
 def convert_all_tsplib():
     """Convert all TSPLIB GEO instances."""
     os.makedirs(TSPLIB_DIR, exist_ok=True)
-    for name, best_known in TSPLIB_INSTANCES.items():
-        convert_tsplib_instance(name, best_known)
+    for name in TSPLIB_INSTANCES:
+        convert_tsplib_instance(name)
 
 
 if __name__ == "__main__":
