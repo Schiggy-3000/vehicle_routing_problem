@@ -60,6 +60,24 @@ async function init() {
   await initMap(addLocationFromMapClick);
   rebuildForm();
 
+  // Mobile sidebar toggle
+  const sidebarToggle = document.getElementById("sidebar-toggle");
+  const sidebar = document.getElementById("sidebar");
+  const backdrop = document.getElementById("sidebar-backdrop");
+
+  const closeSidebar = () => {
+    sidebar.classList.remove("open");
+    backdrop.classList.remove("visible");
+  };
+
+  if (sidebarToggle && backdrop) {
+    sidebarToggle.addEventListener("click", () => {
+      const isOpen = sidebar.classList.toggle("open");
+      backdrop.classList.toggle("visible", isOpen);
+    });
+    backdrop.addEventListener("click", closeSidebar);
+  }
+
   // Problem type dropdown
   document.getElementById("problem-type-select").addEventListener("change", (e) => {
     state.problemType = e.target.value;
@@ -82,6 +100,7 @@ async function init() {
   // Solve
   document.getElementById("btn-solve").addEventListener("click", async () => {
     if (state.locations.length < 2) return;
+    closeSidebar();
     showLoader("Computing distances & solving…");
     clearRoutes();
     clearMapGlow();
