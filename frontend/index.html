@@ -27,34 +27,6 @@
   <!-- ── Sidebar ─────────────────────────────────────────────────── -->
   <aside id="sidebar">
 
-    <!-- Locations -->
-    <div class="sidebar-section">
-      <h2>Locations</h2>
-      <ul id="location-list"></ul>
-      <p id="hint-click-map">Click the map to add locations. First location becomes the depot.</p>
-    </div>
-
-    <!-- Problem-type-specific constraints (rendered by form-builder.js) -->
-    <div id="constraint-section" class="sidebar-section" style="display:none;">
-      <h2 id="constraint-title">Constraints</h2>
-      <div id="constraint-content"></div>
-    </div>
-
-    <!-- Vehicles -->
-    <div class="sidebar-section" id="vehicle-section">
-      <h2>Vehicles</h2>
-      <div id="vehicle-fields"></div>
-    </div>
-
-    <!-- Optimization objective -->
-    <div class="sidebar-section" id="objective-section">
-      <h2>Optimization Objective</h2>
-      <div id="objective-fields">
-        <label><input type="radio" name="objective" value="distance" checked /> Minimize Distance</label><br/>
-        <label><input type="radio" name="objective" value="time" /> Minimize Travel Time</label>
-      </div>
-    </div>
-
     <!-- Load instance -->
     <div class="sidebar-section">
       <select id="instance-select" class="instance-select">
@@ -73,6 +45,34 @@
       <button class="btn btn-primary" id="btn-solve" disabled>Solve</button>
       <button class="btn btn-outline" id="btn-reset">Reset</button>
       <div id="status-msg"></div>
+    </div>
+
+    <!-- Vehicles -->
+    <div class="sidebar-section" id="vehicle-section">
+      <h2>Vehicles</h2>
+      <div id="vehicle-fields"></div>
+    </div>
+
+    <!-- Optimization objective -->
+    <div class="sidebar-section" id="objective-section">
+      <h2>Optimization Objective</h2>
+      <div id="objective-fields">
+        <label><input type="radio" name="objective" value="distance" checked /> Minimize Distance</label><br/>
+        <label><input type="radio" name="objective" value="time" /> Minimize Travel Time</label>
+      </div>
+    </div>
+
+    <!-- Problem-type-specific constraints (rendered by form-builder.js) -->
+    <div id="constraint-section" class="sidebar-section" style="display:none;">
+      <h2 id="constraint-title">Constraints</h2>
+      <div id="constraint-content"></div>
+    </div>
+
+    <!-- Locations -->
+    <div class="sidebar-section">
+      <h2>Locations</h2>
+      <ul id="location-list"></ul>
+      <p id="hint-click-map">Click the map to add locations. First location becomes the depot.</p>
     </div>
 
   </aside>
