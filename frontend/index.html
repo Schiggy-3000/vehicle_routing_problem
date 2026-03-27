@@ -4,6 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>VRP Solver</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="../images/favicon/pineapple_32x32.png" />
+  <link rel="icon" type="image/png" sizes="512x512" href="../images/favicon/pineapple_512x512.png" />
+  <link rel="apple-touch-icon" href="../images/favicon/pineapple_512x512.png" />
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
@@ -82,16 +85,15 @@
       <h3>Solution</h3>
       <div id="results-content"></div>
     </div>
+    <!-- Loading overlay (scoped to map area) -->
+    <div id="loader">
+      <div class="loader-content">
+        <div class="spinner"></div>
+        <span>Solving…</span>
+      </div>
+    </div>
   </div>
 
-</div>
-
-<!-- Loading overlay -->
-<div id="loader">
-  <div class="loader-content">
-    <div class="spinner"></div>
-    <span>Solving…</span>
-  </div>
 </div>
 
 <!-- Google Maps JS API — loaded dynamically by map.js -->

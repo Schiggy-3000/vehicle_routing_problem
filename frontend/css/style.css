@@ -549,7 +549,7 @@ header h1 {
 /* ── Loader overlay ──────────────────────────────────────────────── */
 #loader {
   display: none;
-  position: fixed;
+  position: absolute;
   inset: 0;
   background: rgba(245, 240, 232, 0.88);
   z-index: 1000;

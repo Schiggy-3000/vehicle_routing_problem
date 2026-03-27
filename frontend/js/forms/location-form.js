@@ -16,7 +16,7 @@ export function setLocationCounter(value) {
 export function addLocationFromMapClick({ lat, lng }) {
   const isDepot = state.locations.length === 0;
   const id = `loc_${_locationCounter++}`;
-  const label = isDepot ? "Depot" : `Location ${_locationCounter}`;
+  const label = isDepot ? "Depot" : `Location ${state.locations.length}`;
 
   const location = {
     id,
