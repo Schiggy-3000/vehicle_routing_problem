@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="images/favicon/pineapple_512x512.png" width="80" alt="VRP Solver logo" />
+  <img src="images/pineapple_512x512.png" width="80" alt="VRP Solver logo" />
 </p>
 
 <h1 align="center">VRP Solver</h1>
