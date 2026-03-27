@@ -236,7 +236,51 @@ export function drawBestKnownRoute(stops, vehicleIndex) {
     map,
     zIndex: 0,
   });
+
+  polyline.addListener("mouseover", () => {
+    highlightBestKnown();
+    document.dispatchEvent(new CustomEvent("best-known-hover"));
+  });
+  polyline.addListener("mouseout", () => {
+    unhighlightBestKnown();
+    document.dispatchEvent(new CustomEvent("best-known-hover-end"));
+  });
+
   bestKnownObjects.push(polyline);
+}
+
+export function highlightBestKnown() {
+  bestKnownObjects.forEach((p) => {
+    p.setOptions({
+      icons: [{
+        icon: { path: "M 0,-1 0,1", strokeOpacity: 1.0, strokeWeight: 3, scale: 4 },
+        offset: "0",
+        repeat: "12px",
+      }],
+      zIndex: 10,
+    });
+  });
+  // Dim solver routes
+  routeObjects.forEach((ro) => {
+    _setRouteStyle(ro, { strokeWeight: 3, strokeOpacity: 0.3 });
+  });
+}
+
+export function unhighlightBestKnown() {
+  bestKnownObjects.forEach((p) => {
+    p.setOptions({
+      icons: [{
+        icon: { path: "M 0,-1 0,1", strokeOpacity: 0.5, strokeWeight: 3, scale: 3 },
+        offset: "0",
+        repeat: "16px",
+      }],
+      zIndex: 0,
+    });
+  });
+  // Restore solver routes
+  routeObjects.forEach((ro) => {
+    _setRouteStyle(ro, { strokeWeight: 4, strokeOpacity: 0.85 });
+  });
 }
 
 export function clearBestKnownRoutes() {

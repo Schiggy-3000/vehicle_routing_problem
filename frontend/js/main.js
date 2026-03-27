@@ -109,7 +109,14 @@ async function init() {
 
         // Fit map AFTER rendering routes (routes are now plain Polylines, no viewport override)
         await fitBoundsToLocations(state.locations);
-        renderTable(response, state.problemType, state.instanceExpected, state.distanceMetric);
+
+        // Resolve best-known stop IDs to location objects for the table
+        let bestKnownStops = null;
+        if (state.bestKnownRoutes?.length) {
+          const locMap = Object.fromEntries(state.locations.map((l) => [l.id, l]));
+          bestKnownStops = state.bestKnownRoutes[0].stop_ids.map((id) => locMap[id]).filter(Boolean);
+        }
+        renderTable(response, state.problemType, state.instanceExpected, state.distanceMetric, bestKnownStops);
         flashMapGlow("success");
         showToast("Solution found!", "success");
       } else {

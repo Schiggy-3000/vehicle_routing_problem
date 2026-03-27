@@ -1,9 +1,9 @@
-import { getVehicleColor, highlightRoute, unhighlightAllRoutes } from "../map.js";
+import { getVehicleColor, highlightRoute, unhighlightAllRoutes, highlightBestKnown, unhighlightBestKnown } from "../map.js";
 
 /**
  * Renders the route breakdown table in the results panel.
  */
-export function renderTable(solutionResponse, problemType, instanceExpected = null, distanceMetric = null) {
+export function renderTable(solutionResponse, problemType, instanceExpected = null, distanceMetric = null, bestKnownStops = null) {
   const panel   = document.getElementById("results-panel");
   const content = document.getElementById("results-content");
 
@@ -79,6 +79,27 @@ export function renderTable(solutionResponse, problemType, instanceExpected = nu
     ? `<div class="results-footer">${footerParts.join(" · ")}</div>`
     : "";
 
+  // Best-known route row (mirrors solver route rows)
+  let bestKnownRow = "";
+  if (bestKnownStops && bestKnownStops.length >= 2) {
+    const bkStopsStr = bestKnownStops.map((s) => s.label).join(" &rarr; ");
+    const bkDistStr = instanceExpected?.best_known_objective != null
+      ? `${(instanceExpected.best_known_objective / 1000).toFixed(1)} km`
+      : "—";
+    const bkMetricLabel = instanceExpected?.best_known_metric
+      ? ` <small>(${instanceExpected.best_known_metric})</small>`
+      : "";
+
+    bestKnownRow = `
+      <div class="route-row best-known-row" style="border-left-color: #888;">
+        <div class="route-header">
+          <strong style="color:#888">Best known</strong>
+          <small class="route-meta">${bkDistStr}${bkMetricLabel}</small>
+        </div>
+        <span class="route-stops">${bkStopsStr}</span>
+      </div>`;
+  }
+
   const legend = bestKnownNote
     ? `<div class="route-legend">
         <span class="route-legend-item"><span class="legend-line solid"></span> Solver</span>
@@ -86,11 +107,11 @@ export function renderTable(solutionResponse, problemType, instanceExpected = nu
       </div>`
     : "";
 
-  content.innerHTML = routeRows + dropped + obj + bestKnownNote + legend;
+  content.innerHTML = routeRows + bestKnownRow + dropped + obj + bestKnownNote + legend;
   panel.classList.add("visible");
 
   // Cross-highlighting: hover route card → highlight map route
-  content.querySelectorAll(".route-row").forEach((row) => {
+  content.querySelectorAll(".route-row:not(.best-known-row)").forEach((row) => {
     const vehicleIdx = parseInt(row.dataset.vehicle);
     row.addEventListener("mouseenter", () => {
       highlightRoute(vehicleIdx);
@@ -101,6 +122,19 @@ export function renderTable(solutionResponse, problemType, instanceExpected = nu
       row.classList.remove("route-hover");
     });
   });
+
+  // Cross-highlighting: hover best-known card → highlight best-known on map
+  const bkRow = content.querySelector(".best-known-row");
+  if (bkRow) {
+    bkRow.addEventListener("mouseenter", () => {
+      highlightBestKnown();
+      bkRow.classList.add("route-hover");
+    });
+    bkRow.addEventListener("mouseleave", () => {
+      unhighlightBestKnown();
+      bkRow.classList.remove("route-hover");
+    });
+  }
 
   // Listen for map route hover → highlight corresponding card
   _setupMapRouteHoverListener();
@@ -120,6 +154,14 @@ function _setupMapRouteHoverListener() {
   });
   document.addEventListener("route-hover-end", () => {
     document.querySelectorAll(".route-row").forEach((row) => row.classList.remove("route-hover"));
+  });
+  document.addEventListener("best-known-hover", () => {
+    const bk = document.querySelector(".best-known-row");
+    if (bk) bk.classList.add("route-hover");
+  });
+  document.addEventListener("best-known-hover-end", () => {
+    const bk = document.querySelector(".best-known-row");
+    if (bk) bk.classList.remove("route-hover");
   });
 }
 
